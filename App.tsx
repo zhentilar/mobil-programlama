@@ -789,9 +789,9 @@ const styles = StyleSheet.create({
   },
   logoImage: { width: 65, height: 65 }, 
   
-  elmasBadge: { backgroundColor: '#fdecea', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4 },
+  elmasBadge: { backgroundColor: '#fdecea', borderRadius: 999, paddingHorizontal: 16, paddingVertical: 4, marginRight: 16 },
   elmasText: { fontSize: 13, fontWeight: '600', color: '#C0392B' },
-  topLeftMenu: { position: 'absolute', left: 12, top: 10, zIndex: 30 },
+  topLeftMenu: { position: 'absolute', left: 20, top: 10, zIndex: 30 },
 
   progressContainer: { 
     flexDirection: 'row', 
