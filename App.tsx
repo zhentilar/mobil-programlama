@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
+  TextInput,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
@@ -14,10 +15,138 @@ import {
 const { width } = Dimensions.get('window');
 
 // =====================
-// VERİLER
+// GİRİŞ EKRANI
 // =====================
+function GirisEkrani(props: any) {
+  const [eposta, setEposta] = React.useState('');
+  const [sifre, setSifre] = React.useState('');
 
-// mevcut ekranlar
+  return (
+    <View style={styles.icKapsayici}>
+      <View style={styles.logoBolumu}>
+        <Image 
+          source={require('./assets/image6.jpeg')} 
+          style={styles.anaLogo} 
+          resizeMode="contain" 
+        />
+        <View style={styles.logoMetinGrubu}>
+          <Text style={styles.logoMetni}>KALKANI</Text>
+          <Text style={styles.logoMetni}>KUŞAN</Text>
+        </View>
+      </View>
+
+      <View style={styles.formBolumu}>
+        <Text style={styles.inputEtiketi}>E posta</Text>
+        <TextInput 
+          style={styles.input} 
+          value={eposta}
+          onChangeText={setEposta}
+          placeholder="E-postanızı giriniz"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
+        <Text style={styles.inputEtiketi}>Şifre</Text>
+        <TextInput 
+          style={styles.input} 
+          value={sifre}
+          onChangeText={setSifre}
+          placeholder="Şifrenizi giriniz"
+          secureTextEntry
+        />
+
+        <TouchableOpacity 
+          style={styles.girisButonu} 
+          onPress={() => props.setAnaEkran('main')} 
+        >
+          <Text style={styles.butonMetni}>Giriş</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.kayitLinkButonu} 
+          onPress={() => props.setAnaEkran('Kayit')}
+        >
+          <Text style={styles.kayitMetni}>Hesabın yok mu?</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+// =====================
+// KAYIT EKRANI
+// =====================
+function KayitEkrani(props: any) {
+  const [kullaniciAdi, setKullaniciAdi] = React.useState('');
+  const [eposta, setEposta] = React.useState('');
+  const [sifre, setSifre] = React.useState('');
+  const [sifreTekrar, setSifreTekrar] = React.useState('');
+
+  return (
+    <ScrollView style={styles.anaKapsayici} contentContainerStyle={styles.icKapsayici}>
+      <View style={styles.ustBolum}>
+        <Image 
+          source={require('./assets/image6.jpeg')} 
+          style={styles.anaLogo} 
+          resizeMode="contain" 
+        />
+        <Text style={styles.anaBaslik}>Hesap Oluşturun</Text>
+      </View>
+
+      <View style={styles.formBolumu}>
+        <Text style={styles.inputEtiketi}>Kullanıcı Adı</Text>
+        <TextInput 
+          style={styles.input} 
+          value={kullaniciAdi}
+          onChangeText={setKullaniciAdi}
+        />
+
+        <Text style={styles.inputEtiketi}>E posta</Text>
+        <TextInput 
+          style={styles.input} 
+          value={eposta}
+          onChangeText={setEposta}
+          placeholder="example@hacettepe.edu.tr"
+          keyboardType="email-address"
+        />
+
+        <Text style={styles.inputEtiketi}>Şifre</Text>
+        <TextInput 
+          style={styles.input} 
+          value={sifre}
+          onChangeText={setSifre}
+          secureTextEntry
+        />
+
+        <Text style={styles.inputEtiketi}>Şifre Tekrar</Text>
+        <TextInput 
+          style={styles.input} 
+          value={sifreTekrar}
+          onChangeText={setSifreTekrar}
+          secureTextEntry
+        />
+
+        <TouchableOpacity 
+          style={styles.kaydolButonu} 
+          onPress={() => props.setAnaEkran('Giris')}
+        >
+          <Text style={styles.butonMetni}>Kaydol</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.linkButonu} 
+          onPress={() => props.setAnaEkran('Giris')}
+        >
+          <Text style={styles.linkMetni}>Hesabın var mı?</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
+  );
+}
+
+// ===================================
+// TÜMÜ BİRLEŞTİRİLMİŞ EKRAN VERİLERİ
+// ===================================
 const baseScreens = [
   {
     id: 1,
@@ -28,6 +157,7 @@ const baseScreens = [
     darkPatternTitle: 'Sosyal Dışlama',
     darkPatternDesc: '"Sıradan" kelimesi ile seni utandırarak satın aldırıyorlar.',
     image: require('./assets/image1.png'),
+    isCustomLayout: false,
   },
   {
     id: 2,
@@ -38,6 +168,7 @@ const baseScreens = [
     darkPatternTitle: 'Entelektüel Küçümseme',
     darkPatternDesc: '"Hazırlıksız" ve "Kaybetmek" sözcükleriyle zekana saldırıyorlar.',
     image: require('./assets/image2.png'),
+    isCustomLayout: false,
   },
   {
     id: 3,
@@ -48,6 +179,7 @@ const baseScreens = [
     darkPatternTitle: 'Vicdan Azabı',
     darkPatternDesc: 'Üzüntü duygusunu paraya çeviriyorlar.',
     image: require('./assets/image3.png'),
+    isCustomLayout: false,
   },
   {
     id: 4,
@@ -58,6 +190,7 @@ const baseScreens = [
     darkPatternTitle: 'Zaman Baskısı',
     darkPatternDesc: 'Geri sayım sayaçları, size acele ile harcama yaptırmaya çalışır. Gerçek bir fırsat yoktur.',
     image: require('./assets/image13.png'),
+    isCustomLayout: false,
   },
   {
     id: 5,
@@ -68,6 +201,7 @@ const baseScreens = [
     darkPatternTitle: 'Stok Sınırı',
     darkPatternDesc: 'Sahte stok uyarıları, ürünün bitmek üzere olduğu yalanıyla sizi acele etmeye zorlar.',
     image: require('./assets/image14.png'),
+    isCustomLayout: false,
   },
   {
     id: 6,
@@ -78,6 +212,43 @@ const baseScreens = [
     darkPatternTitle: 'Sosyal Kanıt Baskısı',
     darkPatternDesc: 'Sosyal kanıt hileleri, sürü psikolojisi yaratarak üzerinizde baskı kurmaya çalışır.',
     image: require('./assets/image15.png'),
+    isCustomLayout: false,
+  },
+  {
+    id: 7,
+    title: 'Merhaba Mustafa',
+    subtitle: 'Daha fazla puan kazanmak ister misin?',
+    primaryBtn: 'DEVAM ET',
+    secondaryBtn: '✕',
+    darkPatternTitle: 'Gizli Beliren Kapat Butonu',
+    darkPatternDesc: 'Büyük ve vurgulu şekilde bulunan aldatıcı devam et butonu ve küçük kapat butonu. Tuzağı fark ettin!',
+    image: require('./Gorseller/first.png'),
+    isCustomLayout: true,
+    customType: 'gecikmeliCarpi',
+  },
+  {
+    id: 8,
+    title: 'Tebrikler İlk Soruyu Doğru Bildiniz',
+    subtitle: 'Kazandığınız puanı ikiye katlamak ister misiniz?',
+    primaryBtn: "2' ye KATLA",
+    secondaryBtn: '✕',
+    darkPatternTitle: 'İşaretli Gelen Check Box',
+    darkPatternDesc: 'İşaretli gelen check box ve vurgulu kabul butonu aldatmacası. Sinsice eklenen abonelik tuzağına düşmedin!',
+    image: require('./Gorseller/ikinci.png'),
+    isCustomLayout: true,
+    customType: 'checkboxTuzagi',
+  },
+  {
+    id: 9,
+    title: 'EYVAH! Puan Tablosunda Geriye Düştünüz',
+    subtitle: 'Bu gidişle ödül kazanamayacaksınız bonus puan almak için butona bas',
+    primaryBtn: 'BONUS',
+    secondaryBtn: '✕',
+    darkPatternTitle: 'Psikolojik Baskı Savunması',
+    darkPatternDesc: 'Kullanıcıyı baskı altına alarak panik etkisi oluşturan sistemi alt ettin ve sakin kalıp doğru seçimi yaptın!',
+    image: require('./Gorseller/ucuncu.png'),
+    isCustomLayout: true,
+    customType: 'psikolojikBaski',
   },
 ];
 
@@ -99,20 +270,18 @@ const shopItems = [
   { id: 6, name: 'Parıltı Efekti', cat: 'aksesuar', sub: 'Profil Efekti', price: 300, rare: true, image: require('./assets/image9.png')},
 ];
 
-// chapterlar (bölümler — her bölüm kendi screens dizisine sahip)
 const chapters = [
   { id: 1, title: 'Bölüm 1', screens: [baseScreens[0], baseScreens[1], baseScreens[2]] },
   { id: 2, title: 'Bölüm 2', screens: [baseScreens[3], baseScreens[4], baseScreens[5]] },
-  { id: 3, title: 'Bölüm 3', screens: [] },
+  { id: 3, title: 'Bölüm 3', screens: [baseScreens[6], baseScreens[7], baseScreens[8]] },
   { id: 4, title: 'Bölüm 4', screens: [] },
 ];
 
-// =====================
-// ANA UYGULAMA
-// =====================
-
-export default function App() {
-  const [activeTab, setActiveTab] = useState<'main' | 'profile' | 'shop'>('main');
+// ====================================================
+// ANA BİLEŞEN 
+// ====================================================
+function MobilProjem() {
+  const [activeTab, setActiveTab] = useState<'Giris' | 'Kayit' | 'main' | 'profile' | 'shop'>('Giris');
   const [elmas, setElmas] = useState(100);
   const [ownedItems, setOwnedItems] = useState<number[]>([1, 2, 3]);
   const [openSelectorTrigger, setOpenSelectorTrigger] = useState(0);
@@ -145,8 +314,17 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Selector açma tetikleyicisi; Ana butonuna basılınca artırılıyor */}
-      {/** state defined below via hook insertion patch **/}
+      
+      {activeTab === 'Giris' && (
+        <GirisEkrani setAnaEkran={setActiveTab} />
+      )}
+
+      {activeTab === 'Kayit' && (
+        <SafeAreaView style={{ flex: 1 }}>
+          <KayitEkrani setAnaEkran={setActiveTab} />
+        </SafeAreaView>
+      )}
+
       {activeTab === 'main' && (
         <MainScreen onEarnElmas={(amount) => setElmas(prev => prev + amount)} elmas={elmas} openSelectorTrigger={openSelectorTrigger} />
       )}
@@ -157,52 +335,52 @@ export default function App() {
         <ShopScreen onBack={() => setActiveTab('profile')} elmas={elmas} ownedItems={ownedItems} onBuy={handleBuy} />
       )}
 
-      <View style={styles.bottomNav}>
-        <TouchableOpacity onPress={() => setActiveTab('profile')} style={styles.navItem}>
-          <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>☰</Text>
-          <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Profil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setActiveTab('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
-          <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>⌂</Text>
-          <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab('shop')} style={styles.navItem}>
-          <Text style={[styles.navIcon, activeTab === 'shop' && styles.navActive]}>🛒</Text>
-          <Text style={[styles.navLabel, activeTab === 'shop' && styles.navActive]}>Dükkan</Text>
-        </TouchableOpacity>
-      </View>
+      {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop') && (
+        <View style={styles.bottomNav}>
+          <TouchableOpacity onPress={() => setActiveTab('profile')} style={styles.navItem}>
+            <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>☰</Text>
+            <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Profil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { setActiveTab('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
+            <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>⌂</Text>
+            <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setActiveTab('shop')} style={styles.navItem}>
+            <Text style={[styles.navIcon, activeTab === 'shop' && styles.navActive]}>🛒</Text>
+            <Text style={[styles.navLabel, activeTab === 'shop' && styles.navActive]}>Dükkan</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
 
-// =====================
-// ANA EKRAN
-// =====================
+export { MobilProjem as default, MobilProjem as App };
 
+// =====================
+// ANA HARİTA EKRANI
+// =====================
 function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: (n: number) => void; elmas: number; openSelectorTrigger?: number }) {
   const [infoVisible, setInfoVisible] = useState(false);
   const [showSelector, setShowSelector] = useState(true);
+  const [onayli, setOnayli] = useState(true);
+  
   useEffect(() => {
     if (typeof openSelectorTrigger !== 'undefined') {
       setShowSelector(true);
     }
   }, [openSelectorTrigger]);
+
   const [progress, setProgress] = useState(0.1);
   const [wrongAnswers, setWrongAnswers] = useState<Record<string, boolean>>({});
   const [earnedThisRound, setEarnedThisRound] = useState<number | null>(null);
 
-  // Bölüm seçici artık dışarıdan tetiklenmiyor; bölüm listesinde tıklayınca açılacak.
-
-  // chapter mantığı
-  const [selectedChapter, setSelectedChapter] = useState(0); // 0 .. 3
-  // her bölüm için mevcut ekran indeksi (0 ile başlar)
+  const [selectedChapter, setSelectedChapter] = useState(0); 
   const [chapterIndex, setChapterIndex] = useState<number[]>(() => chapters.map(() => 0));
-  // bölüm başına ekran kilit durumu (ilk ekran açık)
-  const [unlocked, setUnlocked] = useState<boolean[][]>(() =>
-    chapters.map(ch => ch.screens.map((_, i) => i === 0))
-  );
-
   
+  const [unlocked, setUnlocked] = useState<boolean[][]>(() =>
+    chapters.map((ch, idx) => ch.screens.map((_, i) => (i === 0)))
+  );
 
   const currentChapter = chapters[selectedChapter];
   const currentScreenIndex = chapterIndex[selectedChapter] ?? 0;
@@ -213,14 +391,18 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
   const handlePrimary = () => {
     setProgress(prev => Math.min(prev + 0.3, 0.95));
     setInfoVisible(false);
-    setWrongAnswers(prev => ({ ...prev, [`${selectedChapter}_${currentScreenIndex}`]: true }));
-    setEarnedThisRound(null);
+    if (current?.isCustomLayout) {
+      handleNext();
+    } else {
+      setWrongAnswers(prev => ({ ...prev, [`${selectedChapter}_${currentScreenIndex}`]: true }));
+      setEarnedThisRound(null);
+    }
   };
 
   const handleSecondary = () => {
     const key = `${selectedChapter}_${currentScreenIndex}`;
     const madeWrong = !!wrongAnswers[key];
-    const earned = madeWrong ? 20 : 50;
+    const earned = current?.isCustomLayout ? 50 : (madeWrong ? 20 : 50);
 
     if (earnedThisRound === null) {
       onEarnElmas(earned);
@@ -247,25 +429,57 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
         copy[ch] = nextIndex;
         return copy;
       });
+    } else {
+      setUnlocked(prev => {
+        const copy = prev.map(arr => arr.slice());
+        if (ch + 1 < chapters.length && copy[ch + 1]) {
+          copy[ch + 1][0] = true; 
+        }
+        return copy;
+      });
+      setShowSelector(true);
     }
   };
 
   const handleSelectNode = (chIndex: number, nodeIndex: number) => {
-    if (!unlocked[chIndex] || !unlocked[chIndex][nodeIndex]) return;
+    if (!unlocked[chIndex] || !unlocked[chIndex][nodeIndex]) {
+      if (nodeIndex === 0) {
+        setUnlocked(prev => {
+          const copy = prev.map(arr => arr.slice());
+          copy[chIndex][0] = true;
+          return copy;
+        });
+      } else {
+        return;
+      }
+    }
     setSelectedChapter(chIndex);
     setChapterIndex(prev => {
       const copy = prev.slice();
       copy[chIndex] = nodeIndex;
       return copy;
     });
-    // node'a tıklayınca selector'ı kapat ve ilgili ekranı göster
+    setProgress(0.1); 
     setShowSelector(false);
   };
+
+  const TepeBari = (yuzde: number) => (
+    <View style={styles.tepeGrup}>
+      <Image source={require('./Gorseller/logo.png')} style={styles.tepeLogo} resizeMode="contain" />
+      <View style={styles.avAvciSatiri}>
+        <Image source={require('./Gorseller/image1.png')} style={styles.avAvciIkonu} resizeMode="contain" />
+        <View style={styles.ilerlemeBari}>
+          <View style={[styles.ilerlemeKirmiziAlan, { width: `${yuzde}%` }]} /> 
+        </View>
+        <Image source={require('./Gorseller/image2.png')} style={styles.avAvciIkonu} resizeMode="contain" />
+      </View>
+    </View>
+  );
 
   return (
     <View style={styles.screenContainer}>
       {showSelector && (
-        <TouchableOpacity style={styles.topLeftMenu} onPress={() => {/* TODO: open drawer/menu */}}>
+        <TouchableOpacity style={styles.topLeftMenu} onPress={() => {}}>
           <Text style={styles.navIcon}>☰</Text>
         </TouchableOpacity>
       )}
@@ -282,39 +496,38 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
         </View>
       </View>
 
-      {/* Bölüm seçici (kırmızı yuvarlaklar) - sadece menü açıkken göster */}
       {showSelector && (
         <View style={styles.selectorWrap}>
-        <View style={styles.columnsRow}>
-          {chapters.map((ch, ci) => (
-            <View key={ch.id} style={styles.chapterColumn}>
-              <View style={styles.columnLine} />
-              {(ch.screens.length > 0 ? ch.screens : [0,0,0]).map((s, si) => {
-                const isUnlocked = !!(unlocked[ci] && unlocked[ci][si]);
-                return (
-                  <TouchableOpacity
-                    key={si}
-                    style={styles.nodeCircle}
-                    activeOpacity={isUnlocked ? 0.7 : 1}
-                    onPress={() => handleSelectNode(ci, si)}
-                  >
-                    <Image
-                      source={isUnlocked ? require('./assets/unlocked-icon.png') : require('./assets/locked-icon.png')}
-                      style={styles.nodeIconImage}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.avatarRow}>
-          <View style={styles.avatarCircle}>
-            <Text style={{ fontSize: 28, color: '#fff' }}>👤</Text>
+          <View style={styles.columnsRow}>
+            {chapters.map((ch, ci) => (
+              <View key={ch.id} style={styles.chapterColumn}>
+                <View style={styles.columnLine} />
+                {(ch.screens.length > 0 ? ch.screens : [0,0,0]).map((s, si) => {
+                  const isUnlocked = si === 0 ? true : !!(unlocked[ci] && unlocked[ci][si]);
+                  return (
+                    <TouchableOpacity
+                      key={si}
+                      style={styles.nodeCircleCustom}
+                      activeOpacity={0.7}
+                      onPress={() => handleSelectNode(ci, si)}
+                    >
+                      <Image 
+                        source={isUnlocked ? require('./assets/unlocked-icon.png') : require('./assets/locked-icon.png')}
+                        style={styles.kilitIkonGorseli}
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            ))}
           </View>
-        </View>
+
+          <View style={styles.avatarRow}>
+            <View style={styles.avatarCircle}>
+              <Text style={{ fontSize: 28, color: '#fff' }}>👤</Text>
+            </View>
+          </View>
         </View>
       )}
 
@@ -324,62 +537,68 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
             <Text style={{ fontSize: 16, color: '#888' }}>Bu bölümde içerik yok.</Text>
           </View>
         ) : (
-          <>
-            
-              {/* Bölüm içindeyken görünür ilerleme çubuğu */}
-              <View style={styles.progressContainer}>
-                <Image 
-                  source={require('./assets/image4.png')} 
-                  style={styles.progressImageIcon} 
-                  resizeMode="contain" 
-                />
-                <View style={styles.progressTrack}>
-                  <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
-                  <View style={[styles.avatarDot, { left: `${Math.min(progress * 100, 93)}%` as any }]} />
-                </View>
-                <Image 
-                  source={require('./assets/image5.png')} 
-                  style={styles.progressImageIcon} 
-                  resizeMode="contain" 
-                />
+          <ScrollView contentContainerStyle={{ paddingBottom: 50 }} showsVerticalScrollIndicator={false}>
+            <View style={styles.progressContainer}>
+              <Image 
+                source={require('./assets/image4.png')} 
+                style={styles.progressImageIcon} 
+                resizeMode="contain" 
+              />
+              <View style={styles.progressTrack}>
+                <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
+                <View style={[styles.avatarDot, { left: `${Math.min(progress * 100, 93)}%` as any }]} />
               </View>
+              <Image 
+                source={require('./assets/image5.png')} 
+                style={styles.progressImageIcon} 
+                resizeMode="contain" 
+              />
+            </View>
 
-                  <View style={styles.titleRow}>
-                    <Text style={styles.title}>{current!.title}</Text>
-                    <Text style={styles.subtitle}>{current!.subtitle}</Text>
-                  </View>
+            <View style={styles.titleRow}>
+              <Text style={styles.title}>{current!.title}</Text>
+              <Text style={styles.subtitle}>{current!.subtitle}</Text>
+            </View>
 
-                  <Image source={current!.image} style={styles.image} resizeMode="contain" />
+            <View style={styles.gorselKapsayiciKutusu}>
+              <Image source={current!.image} style={styles.image} resizeMode="contain" />
+            </View>
 
-                  <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
-                    <Text style={styles.btnPrimaryText}>{current!.primaryBtn}</Text>
-                  </TouchableOpacity>
+            {current?.customType === 'checkboxTuzagi' && (
+              <TouchableOpacity style={styles.onayKutusuSatiri} onPress={() => setOnayli(!onayli)}>
+                <Text style={styles.onayKutusuIkonu}>{onayli ? '☑' : '☐'}</Text>
+                <Text style={styles.onayKutusuMetni}>Ayda 9.90 dolar</Text>
+              </TouchableOpacity>
+            )}
 
-                  <TouchableOpacity style={styles.btnSecondary} onPress={handleSecondary}>
-                    <Text style={styles.btnSecondaryText}>{current!.secondaryBtn}</Text>
-                  </TouchableOpacity>
+            <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
+              <Text style={styles.btnPrimaryText}>{current!.primaryBtn}</Text>
+            </TouchableOpacity>
 
-                  {infoVisible && (
-                    <View style={styles.infoBox}>
-                      <Text style={styles.infoTitle}>{current!.darkPatternTitle}</Text>
-                      <Text style={styles.infoDesc}>{current!.darkPatternDesc}</Text>
+            <TouchableOpacity 
+              style={[styles.btnSecondary, current?.customType === 'gecikmeliCarpi' && styles.kucukCarpiTasarimi]} 
+              onPress={handleSecondary}
+            >
+              <Text style={styles.btnSecondaryText}>{current!.secondaryBtn}</Text>
+            </TouchableOpacity>
+
+            {infoVisible && (
+              <View style={styles.infoBoxCustom}>
+                <Text style={styles.infoTitle}>{current!.darkPatternTitle}</Text>
+                <Text style={styles.infoDesc}>{current!.darkPatternDesc}</Text>
                 {earnedThisRound !== null && (
                   <Text style={styles.earnedText}>💎 +{earnedThisRound} elmas kazandın!</Text>
                 )}
-                {!isLastInChapter ? (
-                  <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-                    <Text style={styles.nextBtnText}>Sonraki →</Text>
-                  </TouchableOpacity>
-                ) : (
-                  <Text style={styles.infoNext}>✅ Tebrikler, tüm tuzakları gördün!</Text>
-                )}
+                <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
+                  <Text style={styles.nextBtnText}>
+                    {isLastInChapter ? 'Bölümü Bitir ✓' : 'Sonraki →'}
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
-          </>
+          </ScrollView>
         ))
       )}
-
-      {/* Ana sayfa: doğrudan selector gösteriliyor; bölüm kartları kaldırıldı */}
     </View>
   );
 }
@@ -387,16 +606,7 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
 // =====================
 // PROFİL EKRANI
 // =====================
-
-function ProfileScreen({
-  onShop,
-  ownedItems,
-  elmas,
-}: {
-  onShop: () => void;
-  ownedItems: number[];
-  elmas: number;
-}) {
+function ProfileScreen({ onShop, ownedItems, elmas }: { onShop: () => void; ownedItems: number[]; elmas: number }) {
   const myInventory = initialInventory.map((item, index) => ({
     ...item,
     locked: !ownedItems.includes(item.id) && index >= 3,
@@ -461,18 +671,7 @@ function ProfileScreen({
 // =====================
 // TAKAS DÜKKANI
 // =====================
-
-function ShopScreen({
-  onBack,
-  elmas,
-  ownedItems,
-  onBuy,
-}: {
-  onBack: () => void;
-  elmas: number;
-  ownedItems: number[];
-  onBuy: (id: number, price: number, name: string) => void;
-}) {
+function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; elmas: number; ownedItems: number[]; onBuy: (id: number, price: number, name: string) => void }) {
   const [activeFilter, setActiveFilter] = useState<'tumu' | 'karakter' | 'aksesuar'>('tumu');
 
   const filtered = shopItems.filter(i =>
@@ -549,12 +748,11 @@ function ShopScreen({
 }
 
 // =====================
-// STİLLER
+// STİLLER (STYLES)
 // =====================
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  screenContainer: { flex: 1, paddingHorizontal: 20 }, // Butonların referans aldığı sınır bu
+  screenContainer: { flex: 1, paddingHorizontal: 20 },
 
   bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff' },
   navItem: { alignItems: 'center' },
@@ -562,78 +760,56 @@ const styles = StyleSheet.create({
   navLabel: { fontSize: 10, color: '#888', marginTop: 2 },
   navActive: { color: '#C0392B' },
 
-  topBar: { 
-    flexDirection: 'row', 
-    justifyContent: 'flex-end', 
-    alignItems: 'center', 
-    height: 50, 
-    marginBottom: 5, 
-    zIndex: 10 
-  },
-  
-  logoContainer: {
-    position: 'absolute',
-    left: '50%',
-    transform: [{ translateX: -32.5 }], 
-    zIndex: 20,
-  },
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 50, marginBottom: 5, zIndex: 10 },
+  logoContainer: { position: 'absolute', left: '50%', transform: [{ translateX: -32.5 }], zIndex: 20 },
   logoImage: { width: 65, height: 65 }, 
-  
   elmasBadge: { backgroundColor: '#fdecea', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4 },
   elmasText: { fontSize: 13, fontWeight: '600', color: '#C0392B' },
   topLeftMenu: { position: 'absolute', left: 12, top: 10, zIndex: 30 },
-  // topLeftMenu removed
 
-  // GÜNCELLEME: Tüm özel genişlik hesaplamaları silindi. Sadece kapsayıcı genişliğini (100%) alıyor, böylece tam butonlar hizasında başlıyor.
-  progressContainer: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    marginBottom: 10, 
-    gap: 8,
-  },
+  progressContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 10, gap: 8 },
   progressImageIcon: { width: 20, height: 20 },
   progressTrack: { flex: 1, height: 6, backgroundColor: '#f5c6c2', borderRadius: 999, position: 'relative', overflow: 'visible' },
   progressFill: { height: '100%', backgroundColor: '#C0392B', borderRadius: 999 },
   avatarDot: { position: 'absolute', top: -5, width: 16, height: 16, borderRadius: 8, backgroundColor: '#C0392B', borderWidth: 2, borderColor: '#fff', marginLeft: -8 },
 
-  titleRow: { marginTop: 0, marginBottom: 8 }, 
-  title: { fontSize: 18, fontWeight: '700', color: '#1a1a1a', marginBottom: 2 },
-  subtitle: { fontSize: 13, color: '#888' },
+  titleRow: { marginTop: 5, marginBottom: 8, alignItems: 'center' }, 
+  title: { fontSize: 18, fontWeight: '700', color: '#1a1a1a', marginBottom: 2, textAlign: 'center' },
+  subtitle: { fontSize: 13, color: '#888', textAlign: 'center' },
   
-  // Bölüm seçici stilleri
   selectorWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 12 },
-  columnsRow: { flexDirection: 'row', width: '90%', maxWidth: 420, justifyContent: 'space-around', paddingHorizontal: 10 },
-  chapterColumn: { alignItems: 'center', gap: 6, flexDirection: 'column-reverse', justifyContent: 'space-between', height: 220, position: 'relative' },
-  columnLine: { position: 'absolute', left: '50%', top: 8, bottom: 8, width: 1, backgroundColor: '#222', transform: [{ translateX: -1 }] },
-  nodeCircle: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center', marginVertical: 4, backgroundColor: '#C0392B' },
-  nodeIconImage: { width: 24, height: 24, tintColor: '#fff' },
-  avatarRow: { marginTop: 18, alignItems: 'center' },
-  avatarCircle: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#bdbdbd', alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: '#fff' },
-  // chapter list styles removed — selector shows directly on home
+  columnsRow: { flexDirection: 'row', width: '95%', maxWidth: 450, justifyContent: 'space-around', paddingHorizontal: 5 },
+  chapterColumn: { alignItems: 'center', gap: 12, flexDirection: 'column-reverse', justifyContent: 'space-between', height: 240, position: 'relative' },
+  columnLine: { position: 'absolute', left: '50%', top: 12, bottom: 12, width: 2, backgroundColor: '#bdc3c7', transform: [{ translateX: -1 }] },
   
-  // GÜNCELLEME: Genişlik tam olarak butonlara eşit olacak (%100).
-  image: { 
-    width: '100%', 
-    height: 280, 
-    borderRadius: 12, 
-    marginBottom: 15 
-  },
+  nodeCircleCustom: { width: 55, height: 55, borderRadius: 27.5, alignItems: 'center', justifyContent: 'center', marginVertical: 4, backgroundColor: '#B44434', elevation: 4, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 4 },
+  kilitIkonGorseli: { width: 28, height: 28 },
 
-  btnPrimary: { backgroundColor: '#C0392B', borderRadius: 999, padding: 15, alignItems: 'center', marginBottom: 15 },
+  avatarRow: { marginTop: 24, alignItems: 'center' },
+  avatarCircle: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#bdbdbd', alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: '#fff' },
+  
+  gorselKapsayiciKutusu: { width: '100%', height: 260, backgroundColor: '#E8F0F2', borderRadius: 15, justifyContent: 'center', alignItems: 'center', marginVertical: 10, overflow: 'hidden' },
+  image: { width: '100%', height: '100%' },
+
+  btnPrimary: { backgroundColor: '#C0392B', borderRadius: 999, padding: 15, alignItems: 'center', marginVertical: 8 },
   btnPrimaryText: { color: '#fff', fontSize: 15, fontWeight: '600' },
   btnSecondary: { backgroundColor: '#e0e0e0', borderRadius: 999, padding: 15, alignItems: 'center', marginBottom: 10 },
   btnSecondaryText: { color: '#555', fontSize: 15, fontWeight: '500' },
 
-  infoBox: { borderWidth: 1, borderColor: '#C0392B', borderRadius: 12, padding: 14, backgroundColor: '#fdecea', marginBottom: 8 },
+  kucukCarpiTasarimi: { position: 'absolute', top: 15, right: 15, backgroundColor: 'transparent', width: 30, height: 30, borderRadius: 15, padding: 0, justifyContent: 'center', alignItems: 'center', zIndex: 99 },
+
+  onayKutusuSatiri: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 10 },
+  onayKutusuIkonu: { fontSize: 22, marginRight: 6, color: '#333' },
+  onayKutusuMetni: { fontSize: 16, color: '#333' },
+
+  infoBoxCustom: { borderWidth: 1, borderColor: '#C0392B', borderRadius: 12, padding: 14, backgroundColor: '#fdecea', marginTop: 15, width: '100%' },
   infoTitle: { fontSize: 14, fontWeight: '700', color: '#C0392B', marginBottom: 4, textAlign: 'center' },
   infoDesc: { fontSize: 13, color: '#555', textAlign: 'center', lineHeight: 18 },
   earnedText: { fontSize: 14, fontWeight: '700', color: '#C0392B', textAlign: 'center', marginTop: 8 },
-  infoNext: { fontSize: 13, color: '#C0392B', textAlign: 'center', marginTop: 8, fontWeight: '600' },
   nextBtn: { marginTop: 10, backgroundColor: '#C0392B', borderRadius: 999, padding: 10, alignItems: 'center' },
   nextBtnText: { color: '#fff', fontWeight: '600', fontSize: 14 },
 
   profileHeader: { alignItems: 'center', paddingTop: 16, marginBottom: 20, gap: 6 },
-  avatar: { width: 90, height: 90, borderRadius: 45, marginBottom: 4 },
   username: { fontSize: 20, fontWeight: '600', color: '#1a1a1a' },
   statsRow: { flexDirection: 'row', gap: 10, marginBottom: 24 },
   statBox: { flex: 1, backgroundColor: '#f9f9f9', borderRadius: 12, padding: 14, alignItems: 'center' },
@@ -672,20 +848,33 @@ const styles = StyleSheet.create({
   buyBtnDisabled: { backgroundColor: '#ddd' },
   buyBtnText: { fontSize: 10, color: '#fff', fontWeight: '600' },
 
-  avatarPlaceholder: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: '#fdecea',
-    borderWidth: 2,
-    borderColor: '#C0392B',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 4,
-  },
-  avatarInitial: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#C0392B',
-  },
+  avatarPlaceholder: { width: 90, height: 90, borderRadius: 45, backgroundColor: '#fdecea', borderWidth: 2, borderColor: '#C0392B', alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
+  avatarInitial: { fontSize: 36, fontWeight: '700', color: '#C0392B' },
+
+  // GİRİŞ & KAYIT SİSTEMİ ORTAK STİLLERİ
+  icKapsayici: { flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'flex-start' },
+  logoBolumu: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 60, marginBottom: 30, width: '100%' },
+  anaLogo: { width: 150, height: 150, marginRight: 0 }, 
+  logoMetinGrubu: { flexDirection: 'column', marginLeft: -10 },
+  logoMetni: { fontSize: 32, fontWeight: 'bold', color: '#B44434', lineHeight: 36, textAlign: 'left' },
+  formBolumu: { paddingHorizontal: 40, width: '100%', marginTop: 10 },
+  inputEtiketi: { fontSize: 16, color: '#333', marginBottom: 5, fontWeight: '500' },
+  input: { width: '100%', height: 48, borderWidth: 1, borderColor: '#E0E0E0', borderRadius: 8, marginBottom: 20, paddingHorizontal: 15, backgroundColor: '#FAFAFA' },
+  girisButonu: { backgroundColor: '#B44434', paddingVertical: 16, borderRadius: 8, alignItems: 'center', marginTop: 10 },
+  butonMetni: { color: '#FFF', fontSize: 18, fontWeight: 'bold' },
+  kayitLinkButonu: { marginTop: 20, alignSelf: 'center' },
+  kayitMetni: { color: '#666', fontSize: 15, textDecorationLine: 'underline' },
+  anaKapsayici: { flex: 1, backgroundColor: '#FFFFFF' },
+  ustBolum: { alignItems: 'center', marginTop: 30, marginBottom: 40 },
+  anaBaslik: { fontSize: 28, fontWeight: 'bold', color: '#000' },
+  kaydolButonu: { backgroundColor: '#B44434', paddingVertical: 15, borderRadius: 8, alignItems: 'center', marginTop: 10 },
+  linkButonu: { marginTop: 15, alignSelf: 'flex-start' },
+  linkMetni: { color: '#333', fontSize: 15, textDecorationLine: 'underline' },
+
+  tepeGrup: { alignItems: 'center', marginBottom: 10 },
+  tepeLogo: { width: 120, height: 40, marginBottom: 1 },
+  avAvciSatiri: { flexDirection: 'row', alignItems: 'center', width: '100%', paddingHorizontal: 10 },
+  avAvciIkonu: { width: 15, height: 15 },
+  ilerlemeBari: { flex: 1, height: 10, backgroundColor: '#E0E0E0', borderRadius: 5, marginHorizontal: 10, overflow: 'hidden' },
+  ilerlemeKirmiziAlan: { height: '100%', backgroundColor: '#C43325', borderRadius: 5 },
 });
