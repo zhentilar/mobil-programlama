@@ -477,13 +477,13 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
   );
 
   return (
-    <View style={styles.screenContainer}>
+    <View style={[styles.screenContainer, styles.screenContainerPadding, { paddingTop: 60 }]}>
       {showSelector && (
         <TouchableOpacity style={styles.topLeftMenu} onPress={() => {}}>
           <Text style={styles.navIcon}>☰</Text>
         </TouchableOpacity>
       )}
-      <View style={[styles.topBar, showSelector && styles.topBarSelector]}>
+      <View style={[styles.topBar, styles.topBarFullWidth, showSelector && styles.topBarSelector]}>
         <View style={styles.logoContainer}>
           <Image
             source={require('./assets/image6.jpeg')}
@@ -752,7 +752,8 @@ function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; 
 // =====================
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  screenContainer: { flex: 1, paddingHorizontal: 20 }, 
+  screenContainer: { flex: 1 }, 
+  screenContainerPadding: { paddingHorizontal: 20 },
 
   bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff' },
   navItem: { alignItems: 'center' },
@@ -769,6 +770,7 @@ const styles = StyleSheet.create({
     zIndex: 10, 
     backgroundColor: '#fff' 
   },
+  topBarFullWidth: { position: 'absolute', left: 0, right: 0 },
   topBarSelector: {
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
