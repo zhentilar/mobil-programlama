@@ -613,7 +613,7 @@ function ProfileScreen({ onShop, ownedItems, elmas }: { onShop: () => void; owne
   }));
 
   return (
-    <ScrollView style={styles.screenContainer} showsVerticalScrollIndicator={false}>
+    <ScrollView style={[styles.screenContainer, styles.screenContainerPadding]} showsVerticalScrollIndicator={false}>
       <View style={styles.profileHeader}>
         <View style={styles.avatarPlaceholder}>
           <Text style={styles.avatarInitial}>K</Text>
@@ -679,7 +679,7 @@ function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; 
   );
 
   return (
-    <View style={styles.screenContainer}>
+    <View style={[styles.screenContainer, styles.screenContainerPadding]}>
       <View style={styles.shopHeader}>
         <TouchableOpacity onPress={onBack}>
           <Text style={styles.backBtn}>← Takas Dükkanı</Text>
