@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -115,6 +115,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'main' | 'profile' | 'shop'>('main');
   const [elmas, setElmas] = useState(100);
   const [ownedItems, setOwnedItems] = useState<number[]>([1, 2, 3]);
+  const [openSelectorTrigger, setOpenSelectorTrigger] = useState(0);
 
   const handleBuy = (itemId: number, price: number, name: string) => {
     if (ownedItems.includes(itemId)) {
@@ -144,8 +145,10 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Selector açma tetikleyicisi; Ana butonuna basılınca artırılıyor */}
+      {/** state defined below via hook insertion patch **/}
       {activeTab === 'main' && (
-        <MainScreen onEarnElmas={(amount) => setElmas(prev => prev + amount)} elmas={elmas} />
+        <MainScreen onEarnElmas={(amount) => setElmas(prev => prev + amount)} elmas={elmas} openSelectorTrigger={openSelectorTrigger} />
       )}
       {activeTab === 'profile' && (
         <ProfileScreen onShop={() => setActiveTab('shop')} ownedItems={ownedItems} elmas={elmas} />
@@ -155,13 +158,13 @@ export default function App() {
       )}
 
       <View style={styles.bottomNav}>
-        <TouchableOpacity onPress={() => setActiveTab('main')} style={styles.navItem}>
-          <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>☰</Text>
-          <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => setActiveTab('profile')} style={styles.navItem}>
-          <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>⌂</Text>
+          <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>☰</Text>
           <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Profil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { setActiveTab('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
+          <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>⌂</Text>
+          <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setActiveTab('shop')} style={styles.navItem}>
           <Text style={[styles.navIcon, activeTab === 'shop' && styles.navActive]}>🛒</Text>
@@ -176,11 +179,19 @@ export default function App() {
 // ANA EKRAN
 // =====================
 
-function MainScreen({ onEarnElmas, elmas }: { onEarnElmas: (n: number) => void; elmas: number }) {
+function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: (n: number) => void; elmas: number; openSelectorTrigger?: number }) {
   const [infoVisible, setInfoVisible] = useState(false);
+  const [showSelector, setShowSelector] = useState(true);
+  useEffect(() => {
+    if (typeof openSelectorTrigger !== 'undefined') {
+      setShowSelector(true);
+    }
+  }, [openSelectorTrigger]);
   const [progress, setProgress] = useState(0.1);
   const [wrongAnswers, setWrongAnswers] = useState<Record<string, boolean>>({});
   const [earnedThisRound, setEarnedThisRound] = useState<number | null>(null);
+
+  // Bölüm seçici artık dışarıdan tetiklenmiyor; bölüm listesinde tıklayınca açılacak.
 
   // chapter mantığı
   const [selectedChapter, setSelectedChapter] = useState(0); // 0 .. 3
@@ -239,14 +250,29 @@ function MainScreen({ onEarnElmas, elmas }: { onEarnElmas: (n: number) => void; 
     }
   };
 
+  const handleSelectNode = (chIndex: number, nodeIndex: number) => {
+    if (!unlocked[chIndex] || !unlocked[chIndex][nodeIndex]) return;
+    setSelectedChapter(chIndex);
+    setChapterIndex(prev => {
+      const copy = prev.slice();
+      copy[chIndex] = nodeIndex;
+      return copy;
+    });
+    // node'a tıklayınca selector'ı kapat ve ilgili ekranı göster
+    setShowSelector(false);
+  };
+
   return (
     <View style={styles.screenContainer}>
+      <TouchableOpacity style={styles.topLeftMenu} onPress={() => {/* TODO: open drawer/menu */}}>
+        <Text style={styles.navIcon}>☰</Text>
+      </TouchableOpacity>
       <View style={styles.topBar}>
         <View style={styles.logoContainer}>
-          <Image 
-            source={require('./assets/image6.jpeg')} 
-            style={styles.logoImage} 
-            resizeMode="contain" 
+          <Image
+            source={require('./assets/image6.jpeg')}
+            style={styles.logoImage}
+            resizeMode="contain"
           />
         </View>
         <View style={styles.elmasBadge}>
@@ -254,62 +280,104 @@ function MainScreen({ onEarnElmas, elmas }: { onEarnElmas: (n: number) => void; 
         </View>
       </View>
 
-      <View style={styles.progressContainer}>
-        <Image 
-          source={require('./assets/image4.png')} 
-          style={styles.progressImageIcon} 
-          resizeMode="contain" 
-        />
-        <View style={styles.progressTrack}>
-          <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
-          <View style={[styles.avatarDot, { left: `${Math.min(progress * 100, 93)}%` as any }]} />
-        </View>
-        <Image 
-          source={require('./assets/image5.png')} 
-          style={styles.progressImageIcon} 
-          resizeMode="contain" 
-        />
-      </View>
-
-      {!hasScreens ? (
-        <View style={{ padding: 24, alignItems: 'center' }}>
-          <Text style={{ fontSize: 16, color: '#888' }}>Bu bölümde içerik yok.</Text>
-        </View>
-      ) : (
-        <>
-          <View style={styles.titleRow}>
-            <Text style={styles.title}>{current.title}</Text>
-            <Text style={styles.subtitle}>{current.subtitle}</Text>
-          </View>
-
-          <Image source={current.image} style={styles.image} resizeMode="contain" />
-
-          <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
-            <Text style={styles.btnPrimaryText}>{current.primaryBtn}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btnSecondary} onPress={handleSecondary}>
-            <Text style={styles.btnSecondaryText}>{current.secondaryBtn}</Text>
-          </TouchableOpacity>
-
-          {infoVisible && (
-            <View style={styles.infoBox}>
-              <Text style={styles.infoTitle}>{current.darkPatternTitle}</Text>
-              <Text style={styles.infoDesc}>{current.darkPatternDesc}</Text>
-              {earnedThisRound !== null && (
-                <Text style={styles.earnedText}>💎 +{earnedThisRound} elmas kazandın!</Text>
-              )}
-              {!isLastInChapter ? (
-                <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-                  <Text style={styles.nextBtnText}>Sonraki →</Text>
-                </TouchableOpacity>
-              ) : (
-                <Text style={styles.infoNext}>✅ Tebrikler, tüm tuzakları gördün!</Text>
-              )}
+      {/* Bölüm seçici (kırmızı yuvarlaklar) - sadece menü açıkken göster */}
+      {showSelector && (
+        <View style={styles.selectorWrap}>
+        <View style={styles.columnsRow}>
+          {chapters.map((ch, ci) => (
+            <View key={ch.id} style={styles.chapterColumn}>
+              <View style={styles.columnLine} />
+              {(ch.screens.length > 0 ? ch.screens : [0,0,0]).map((s, si) => {
+                const isUnlocked = !!(unlocked[ci] && unlocked[ci][si]);
+                return (
+                  <TouchableOpacity
+                    key={si}
+                    style={styles.nodeCircle}
+                    activeOpacity={isUnlocked ? 0.7 : 1}
+                    onPress={() => handleSelectNode(ci, si)}
+                  >
+                    <Image
+                      source={isUnlocked ? require('./assets/unlocked-icon.png') : require('./assets/locked-icon.png')}
+                      style={styles.nodeIconImage}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                );
+              })}
             </View>
-          )}
-        </>
+          ))}
+        </View>
+
+        <View style={styles.avatarRow}>
+          <View style={styles.avatarCircle}>
+            <Text style={{ fontSize: 28, color: '#fff' }}>👤</Text>
+          </View>
+        </View>
+        </View>
       )}
+
+      {!showSelector && (
+        (!hasScreens ? (
+          <View style={{ padding: 24, alignItems: 'center' }}>
+            <Text style={{ fontSize: 16, color: '#888' }}>Bu bölümde içerik yok.</Text>
+          </View>
+        ) : (
+          <>
+            
+              {/* Bölüm içindeyken görünür ilerleme çubuğu */}
+              <View style={styles.progressContainer}>
+                <Image 
+                  source={require('./assets/image4.png')} 
+                  style={styles.progressImageIcon} 
+                  resizeMode="contain" 
+                />
+                <View style={styles.progressTrack}>
+                  <View style={[styles.progressFill, { width: `${progress * 100}%` as any }]} />
+                  <View style={[styles.avatarDot, { left: `${Math.min(progress * 100, 93)}%` as any }]} />
+                </View>
+                <Image 
+                  source={require('./assets/image5.png')} 
+                  style={styles.progressImageIcon} 
+                  resizeMode="contain" 
+                />
+              </View>
+
+                  <View style={styles.titleRow}>
+                    <Text style={styles.title}>{current!.title}</Text>
+                    <Text style={styles.subtitle}>{current!.subtitle}</Text>
+                  </View>
+
+                  <Image source={current!.image} style={styles.image} resizeMode="contain" />
+
+                  <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
+                    <Text style={styles.btnPrimaryText}>{current!.primaryBtn}</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.btnSecondary} onPress={handleSecondary}>
+                    <Text style={styles.btnSecondaryText}>{current!.secondaryBtn}</Text>
+                  </TouchableOpacity>
+
+                  {infoVisible && (
+                    <View style={styles.infoBox}>
+                      <Text style={styles.infoTitle}>{current!.darkPatternTitle}</Text>
+                      <Text style={styles.infoDesc}>{current!.darkPatternDesc}</Text>
+                {earnedThisRound !== null && (
+                  <Text style={styles.earnedText}>💎 +{earnedThisRound} elmas kazandın!</Text>
+                )}
+                {!isLastInChapter ? (
+                  <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
+                    <Text style={styles.nextBtnText}>Sonraki →</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <Text style={styles.infoNext}>✅ Tebrikler, tüm tuzakları gördün!</Text>
+                )}
+              </View>
+            )}
+          </>
+        ))
+      )}
+
+      {/* Ana sayfa: doğrudan selector gösteriliyor; bölüm kartları kaldırıldı */}
     </View>
   );
 }
@@ -511,6 +579,8 @@ const styles = StyleSheet.create({
   
   elmasBadge: { backgroundColor: '#fdecea', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4 },
   elmasText: { fontSize: 13, fontWeight: '600', color: '#C0392B' },
+  topLeftMenu: { position: 'absolute', left: 12, top: 10, zIndex: 30 },
+  // topLeftMenu removed
 
   // GÜNCELLEME: Tüm özel genişlik hesaplamaları silindi. Sadece kapsayıcı genişliğini (100%) alıyor, böylece tam butonlar hizasında başlıyor.
   progressContainer: { 
@@ -527,6 +597,17 @@ const styles = StyleSheet.create({
   titleRow: { marginTop: 0, marginBottom: 8 }, 
   title: { fontSize: 18, fontWeight: '700', color: '#1a1a1a', marginBottom: 2 },
   subtitle: { fontSize: 13, color: '#888' },
+  
+  // Bölüm seçici stilleri
+  selectorWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 12 },
+  columnsRow: { flexDirection: 'row', width: '90%', maxWidth: 420, justifyContent: 'space-around', paddingHorizontal: 10 },
+  chapterColumn: { alignItems: 'center', gap: 6, flexDirection: 'column-reverse', justifyContent: 'space-between', height: 220, position: 'relative' },
+  columnLine: { position: 'absolute', left: '50%', top: 8, bottom: 8, width: 1, backgroundColor: '#222', transform: [{ translateX: -1 }] },
+  nodeCircle: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center', marginVertical: 4, backgroundColor: '#C0392B' },
+  nodeIconImage: { width: 24, height: 24, tintColor: '#fff' },
+  avatarRow: { marginTop: 18, alignItems: 'center' },
+  avatarCircle: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#bdbdbd', alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: '#fff' },
+  // chapter list styles removed — selector shows directly on home
   
   // GÜNCELLEME: Genişlik tam olarak butonlara eşit olacak (%100).
   image: { 
