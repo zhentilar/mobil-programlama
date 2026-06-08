@@ -17,7 +17,8 @@ const { width } = Dimensions.get('window');
 // VERİLER
 // =====================
 
-const screens = [
+// mevcut ekranlar
+const baseScreens = [
   {
     id: 1,
     title: 'Sana Özel Kıyafet!',
@@ -98,6 +99,14 @@ const shopItems = [
   { id: 6, name: 'Parıltı Efekti', cat: 'aksesuar', sub: 'Profil Efekti', price: 300, rare: true, image: require('./assets/image9.png')},
 ];
 
+// chapterlar (bölümler — her bölüm kendi screens dizisine sahip)
+const chapters = [
+  { id: 1, title: 'Bölüm 1', screens: [baseScreens[0], baseScreens[1], baseScreens[2]] },
+  { id: 2, title: 'Bölüm 2', screens: [baseScreens[3], baseScreens[4], baseScreens[5]] },
+  { id: 3, title: 'Bölüm 3', screens: [] },
+  { id: 4, title: 'Bölüm 4', screens: [] },
+];
+
 // =====================
 // ANA UYGULAMA
 // =====================
@@ -168,29 +177,39 @@ export default function App() {
 // =====================
 
 function MainScreen({ onEarnElmas, elmas }: { onEarnElmas: (n: number) => void; elmas: number }) {
-  const [screenIndex, setScreenIndex] = useState(0);
   const [infoVisible, setInfoVisible] = useState(false);
   const [progress, setProgress] = useState(0.1);
-  const [wrongAnswers, setWrongAnswers] = useState<Record<number, boolean>>({});
+  const [wrongAnswers, setWrongAnswers] = useState<Record<string, boolean>>({});
   const [earnedThisRound, setEarnedThisRound] = useState<number | null>(null);
 
-  const current = screens[screenIndex];
-  const isLast = screenIndex === screens.length - 1;
+  // chapter mantığı
+  const [selectedChapter, setSelectedChapter] = useState(0); // 0 .. 3
+  // her bölüm için mevcut ekran indeksi (0 ile başlar)
+  const [chapterIndex, setChapterIndex] = useState<number[]>(() => chapters.map(() => 0));
+  // bölüm başına ekran kilit durumu (ilk ekran açık)
+  const [unlocked, setUnlocked] = useState<boolean[][]>(() =>
+    chapters.map(ch => ch.screens.map((_, i) => i === 0))
+  );
+
+  
+
+  const currentChapter = chapters[selectedChapter];
+  const currentScreenIndex = chapterIndex[selectedChapter] ?? 0;
+  const hasScreens = !!(currentChapter && currentChapter.screens && currentChapter.screens.length > 0);
+  const current = hasScreens ? currentChapter.screens[currentScreenIndex] : null;
+  const isLastInChapter = hasScreens ? currentScreenIndex === currentChapter.screens.length - 1 : true;
 
   const handlePrimary = () => {
     setProgress(prev => Math.min(prev + 0.3, 0.95));
     setInfoVisible(false);
-    setWrongAnswers(prev => ({ ...prev, [screenIndex]: true }));
+    setWrongAnswers(prev => ({ ...prev, [`${selectedChapter}_${currentScreenIndex}`]: true }));
     setEarnedThisRound(null);
   };
 
   const handleSecondary = () => {
-    const madeWrong = wrongAnswers[screenIndex] === true;
-    let earned = 0;
-
-    if (screenIndex === 0) earned = madeWrong ? 30 : 50;
-    else if (screenIndex === 1) earned = madeWrong ? 30 : 50;
-    else if (screenIndex === 2) earned = madeWrong ? 10 : 50;
+    const key = `${selectedChapter}_${currentScreenIndex}`;
+    const madeWrong = !!wrongAnswers[key];
+    const earned = madeWrong ? 20 : 50;
 
     if (earnedThisRound === null) {
       onEarnElmas(earned);
@@ -200,10 +219,23 @@ function MainScreen({ onEarnElmas, elmas }: { onEarnElmas: (n: number) => void; 
   };
 
   const handleNext = () => {
-    if (!isLast) {
-      setScreenIndex(prev => prev + 1);
-      setInfoVisible(false);
-      setEarnedThisRound(null);
+    setInfoVisible(false);
+    setEarnedThisRound(null);
+
+    const ch = selectedChapter;
+    const nextIndex = (chapterIndex[ch] ?? 0) + 1;
+    if (nextIndex < (chapters[ch].screens.length)) {
+      setUnlocked(prev => {
+        const copy = prev.map(arr => arr.slice());
+        if (!copy[ch]) copy[ch] = chapters[ch].screens.map((_, i) => i === 0);
+        copy[ch][nextIndex] = true;
+        return copy;
+      });
+      setChapterIndex(prev => {
+        const copy = prev.slice();
+        copy[ch] = nextIndex;
+        return copy;
+      });
     }
   };
 
@@ -239,36 +271,44 @@ function MainScreen({ onEarnElmas, elmas }: { onEarnElmas: (n: number) => void; 
         />
       </View>
 
-      <View style={styles.titleRow}>
-        <Text style={styles.title}>{current.title}</Text>
-        <Text style={styles.subtitle}>{current.subtitle}</Text>
-      </View>
-
-      <Image source={current.image} style={styles.image} resizeMode="contain" />
-
-      <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
-        <Text style={styles.btnPrimaryText}>{current.primaryBtn}</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.btnSecondary} onPress={handleSecondary}>
-        <Text style={styles.btnSecondaryText}>{current.secondaryBtn}</Text>
-      </TouchableOpacity>
-
-      {infoVisible && (
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>{current.darkPatternTitle}</Text>
-          <Text style={styles.infoDesc}>{current.darkPatternDesc}</Text>
-          {earnedThisRound !== null && (
-            <Text style={styles.earnedText}>💎 +{earnedThisRound} elmas kazandın!</Text>
-          )}
-          {!isLast ? (
-            <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-              <Text style={styles.nextBtnText}>Sonraki →</Text>
-            </TouchableOpacity>
-          ) : (
-            <Text style={styles.infoNext}>✅ Tebrikler, tüm tuzakları gördün!</Text>
-          )}
+      {!hasScreens ? (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Text style={{ fontSize: 16, color: '#888' }}>Bu bölümde içerik yok.</Text>
         </View>
+      ) : (
+        <>
+          <View style={styles.titleRow}>
+            <Text style={styles.title}>{current.title}</Text>
+            <Text style={styles.subtitle}>{current.subtitle}</Text>
+          </View>
+
+          <Image source={current.image} style={styles.image} resizeMode="contain" />
+
+          <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
+            <Text style={styles.btnPrimaryText}>{current.primaryBtn}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.btnSecondary} onPress={handleSecondary}>
+            <Text style={styles.btnSecondaryText}>{current.secondaryBtn}</Text>
+          </TouchableOpacity>
+
+          {infoVisible && (
+            <View style={styles.infoBox}>
+              <Text style={styles.infoTitle}>{current.darkPatternTitle}</Text>
+              <Text style={styles.infoDesc}>{current.darkPatternDesc}</Text>
+              {earnedThisRound !== null && (
+                <Text style={styles.earnedText}>💎 +{earnedThisRound} elmas kazandın!</Text>
+              )}
+              {!isLastInChapter ? (
+                <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
+                  <Text style={styles.nextBtnText}>Sonraki →</Text>
+                </TouchableOpacity>
+              ) : (
+                <Text style={styles.infoNext}>✅ Tebrikler, tüm tuzakları gördün!</Text>
+              )}
+            </View>
+          )}
+        </>
       )}
     </View>
   );
