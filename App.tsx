@@ -264,9 +264,11 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
 
   return (
     <View style={styles.screenContainer}>
-      <TouchableOpacity style={styles.topLeftMenu} onPress={() => {/* TODO: open drawer/menu */}}>
-        <Text style={styles.navIcon}>☰</Text>
-      </TouchableOpacity>
+      {showSelector && (
+        <TouchableOpacity style={styles.topLeftMenu} onPress={() => {/* TODO: open drawer/menu */}}>
+          <Text style={styles.navIcon}>☰</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.topBar}>
         <View style={styles.logoContainer}>
           <Image
