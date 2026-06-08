@@ -48,6 +48,36 @@ const screens = [
     darkPatternDesc: 'Üzüntü duygusunu paraya çeviriyorlar.',
     image: require('./assets/image3.png'),
   },
+  {
+    id: 4,
+    title: 'Süreli İndirim!',
+    subtitle: "Sadece kısa bir zaman için geçerli olan indirimi kaçırma! Süre dolmadan hemen sahip ol.",
+    primaryBtn: 'ŞİMDİ SATIN AL!',
+    secondaryBtn: 'Teşekkürler, ilgilenmiyorum',
+    darkPatternTitle: 'Zaman Baskısı',
+    darkPatternDesc: 'Geri sayım sayaçları, size acele ile harcama yaptırmaya çalışır. Gerçek bir fırsat yoktur.',
+    image: require('./assets/image13.png'),
+  },
+  {
+    id: 5,
+    title: 'TÜKENMEDEN KAP!',
+    subtitle: "Son kalan ürünleri stoklar tükenmeden hemen envanterine ekle!",
+    primaryBtn: 'ŞİMDİ AL! (FIRSATI YAKALA)',
+    secondaryBtn: 'Satın almadan devam et',
+    darkPatternTitle: 'Stok Sınırı',
+    darkPatternDesc: 'Sahte stok uyarıları, ürünün bitmek üzere olduğu yalanıyla sizi acele etmeye zorlar.',
+    image: require('./assets/image14.png'),
+  },
+  {
+    id: 6,
+    title: 'Popüler Ürün!',
+    subtitle: "Kullanıcılar bu ürünü satın almak üzere! Acele et ve fırsatı kaçıran kişi sen olma.",
+    primaryBtn: 'Hemen sepete ekle!',
+    secondaryBtn: 'Teşekkürler, ilgilenmiyorum',
+    darkPatternTitle: 'Sosyal Kanıt Baskısı',
+    darkPatternDesc: 'Sosyal kanıt hileleri, sürü psikolojisi yaratarak üzerinizde baskı kurmaya çalışır.',
+    image: require('./assets/image15.png'),
+  },
 ];
 
 const initialInventory = [
