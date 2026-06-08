@@ -752,7 +752,7 @@ function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; 
 // =====================
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  screenContainer: { flex: 1, paddingHorizontal: 20 },
+  screenContainer: { flex: 1, paddingHorizontal: 20 }, 
 
   bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff' },
   navItem: { alignItems: 'center' },
@@ -760,56 +760,99 @@ const styles = StyleSheet.create({
   navLabel: { fontSize: 10, color: '#888', marginTop: 2 },
   navActive: { color: '#C0392B' },
 
-  topBar: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 50, marginBottom: 5, zIndex: 10 },
-  logoContainer: { position: 'absolute', left: '50%', transform: [{ translateX: -32.5 }], zIndex: 20 },
+  topBar: { 
+    flexDirection: 'row', 
+    justifyContent: 'flex-end', 
+    alignItems: 'center', 
+    height: 50, 
+    marginBottom: 5, 
+    zIndex: 10 
+  },
+  
+  logoContainer: {
+    position: 'absolute',
+    left: '50%',
+    transform: [{ translateX: -32.5 }], 
+    zIndex: 20,
+  },
   logoImage: { width: 65, height: 65 }, 
+  
   elmasBadge: { backgroundColor: '#fdecea', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4 },
   elmasText: { fontSize: 13, fontWeight: '600', color: '#C0392B' },
   topLeftMenu: { position: 'absolute', left: 12, top: 10, zIndex: 30 },
 
-  progressContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 10, gap: 8 },
+  progressContainer: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 10, 
+    gap: 8,
+  },
   progressImageIcon: { width: 20, height: 20 },
   progressTrack: { flex: 1, height: 6, backgroundColor: '#f5c6c2', borderRadius: 999, position: 'relative', overflow: 'visible' },
   progressFill: { height: '100%', backgroundColor: '#C0392B', borderRadius: 999 },
   avatarDot: { position: 'absolute', top: -5, width: 16, height: 16, borderRadius: 8, backgroundColor: '#C0392B', borderWidth: 2, borderColor: '#fff', marginLeft: -8 },
 
-  titleRow: { marginTop: 5, marginBottom: 8, alignItems: 'center' }, 
-  title: { fontSize: 18, fontWeight: '700', color: '#1a1a1a', marginBottom: 2, textAlign: 'center' },
-  subtitle: { fontSize: 13, color: '#888', textAlign: 'center' },
+  titleRow: { marginTop: 0, marginBottom: 8 }, 
+  title: { fontSize: 18, fontWeight: '700', color: '#1a1a1a', marginBottom: 2 },
+  subtitle: { fontSize: 13, color: '#888' },
   
   selectorWrap: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 12 },
-  columnsRow: { flexDirection: 'row', width: '95%', maxWidth: 450, justifyContent: 'space-around', paddingHorizontal: 5 },
-  chapterColumn: { alignItems: 'center', gap: 12, flexDirection: 'column-reverse', justifyContent: 'space-between', height: 240, position: 'relative' },
-  columnLine: { position: 'absolute', left: '50%', top: 12, bottom: 12, width: 2, backgroundColor: '#bdc3c7', transform: [{ translateX: -1 }] },
-  
-  nodeCircleCustom: { width: 55, height: 55, borderRadius: 27.5, alignItems: 'center', justifyContent: 'center', marginVertical: 4, backgroundColor: '#B44434', elevation: 4, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 4 },
+  columnsRow: { flexDirection: 'row', width: '90%', maxWidth: 420, justifyContent: 'space-around', paddingHorizontal: 10 },
+  chapterColumn: { alignItems: 'center', gap: 6, flexDirection: 'column-reverse', justifyContent: 'space-between', height: 220, position: 'relative' },
+  columnLine: { position: 'absolute', left: '50%', top: 8, bottom: 8, width: 1, backgroundColor: '#222', transform: [{ translateX: -1 }] },
+  nodeCircle: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center', marginVertical: 4, backgroundColor: '#C0392B' },
+  nodeCircleCustom: { width: 55, height: 55, borderRadius: 27.5, alignItems: 'center', justifyContent: 'center', marginVertical: 4, backgroundColor: '#B44434' },
   kilitIkonGorseli: { width: 28, height: 28 },
-
-  avatarRow: { marginTop: 24, alignItems: 'center' },
+  nodeIconImage: { width: 24, height: 24, tintColor: '#fff' },
+  avatarRow: { marginTop: 18, alignItems: 'center' },
   avatarCircle: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#bdbdbd', alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: '#fff' },
   
-  gorselKapsayiciKutusu: { width: '100%', height: 260, backgroundColor: '#E8F0F2', borderRadius: 15, justifyContent: 'center', alignItems: 'center', marginVertical: 10, overflow: 'hidden' },
-  image: { width: '100%', height: '100%' },
+  image: { 
+    width: '100%', 
+    height: 280, 
+    borderRadius: 12, 
+    marginBottom: 15 
+  },
+  gorselKapsayiciKutusuSanaOzel: { 
+    width: '100%', 
+    height: 280, 
+    backgroundColor: '#E8F0F2', 
+    borderRadius: 12, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginBottom: 15, 
+    overflow: 'hidden', 
+    position: 'relative' 
+  },
+  gorselKapsayiciOrijinal: { 
+    width: '100%', 
+    height: 280, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginBottom: 15, 
+    overflow: 'hidden' 
+  },
 
-  btnPrimary: { backgroundColor: '#C0392B', borderRadius: 999, padding: 15, alignItems: 'center', marginVertical: 8 },
+  btnPrimary: { backgroundColor: '#C0392B', borderRadius: 999, padding: 15, alignItems: 'center', marginBottom: 15 },
   btnPrimaryText: { color: '#fff', fontSize: 15, fontWeight: '600' },
   btnSecondary: { backgroundColor: '#e0e0e0', borderRadius: 999, padding: 15, alignItems: 'center', marginBottom: 10 },
   btnSecondaryText: { color: '#555', fontSize: 15, fontWeight: '500' },
-
-  kucukCarpiTasarimi: { position: 'absolute', top: 15, right: 15, backgroundColor: 'transparent', width: 30, height: 30, borderRadius: 15, padding: 0, justifyContent: 'center', alignItems: 'center', zIndex: 99 },
-
+  kucukCarpiTasarimi: { position: 'absolute', top: 15, right: 15, backgroundColor: 'transparent', width: 30, height: 30, borderRadius: 15, padding: 0, justifyContent: 'center', alignItems: 'center', zIndex: 99 }, 
   onayKutusuSatiri: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginVertical: 10 },
   onayKutusuIkonu: { fontSize: 22, marginRight: 6, color: '#333' },
   onayKutusuMetni: { fontSize: 16, color: '#333' },
 
+  infoBox: { borderWidth: 1, borderColor: '#C0392B', borderRadius: 12, padding: 14, backgroundColor: '#fdecea', marginBottom: 8 },
   infoBoxCustom: { borderWidth: 1, borderColor: '#C0392B', borderRadius: 12, padding: 14, backgroundColor: '#fdecea', marginTop: 15, width: '100%' },
   infoTitle: { fontSize: 14, fontWeight: '700', color: '#C0392B', marginBottom: 4, textAlign: 'center' },
   infoDesc: { fontSize: 13, color: '#555', textAlign: 'center', lineHeight: 18 },
   earnedText: { fontSize: 14, fontWeight: '700', color: '#C0392B', textAlign: 'center', marginTop: 8 },
+  infoNext: { fontSize: 13, color: '#C0392B', textAlign: 'center', marginTop: 8, fontWeight: '600' },
   nextBtn: { marginTop: 10, backgroundColor: '#C0392B', borderRadius: 999, padding: 10, alignItems: 'center' },
   nextBtnText: { color: '#fff', fontWeight: '600', fontSize: 14 },
 
   profileHeader: { alignItems: 'center', paddingTop: 16, marginBottom: 20, gap: 6 },
+  avatar: { width: 90, height: 90, borderRadius: 45, marginBottom: 4 },
   username: { fontSize: 20, fontWeight: '600', color: '#1a1a1a' },
   statsRow: { flexDirection: 'row', gap: 10, marginBottom: 24 },
   statBox: { flex: 1, backgroundColor: '#f9f9f9', borderRadius: 12, padding: 14, alignItems: 'center' },
@@ -848,10 +891,23 @@ const styles = StyleSheet.create({
   buyBtnDisabled: { backgroundColor: '#ddd' },
   buyBtnText: { fontSize: 10, color: '#fff', fontWeight: '600' },
 
-  avatarPlaceholder: { width: 90, height: 90, borderRadius: 45, backgroundColor: '#fdecea', borderWidth: 2, borderColor: '#C0392B', alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
-  avatarInitial: { fontSize: 36, fontWeight: '700', color: '#C0392B' },
+  avatarPlaceholder: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#fdecea',
+    borderWidth: 2,
+    borderColor: '#C0392B',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  avatarInitial: {
+    fontSize: 36,
+    fontWeight: '700',
+    color: '#C0392B',
+  },
 
-  // GİRİŞ & KAYIT SİSTEMİ ORTAK STİLLERİ
   icKapsayici: { flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'flex-start' },
   logoBolumu: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 60, marginBottom: 30, width: '100%' },
   anaLogo: { width: 150, height: 150, marginRight: 0 }, 
@@ -870,11 +926,4 @@ const styles = StyleSheet.create({
   kaydolButonu: { backgroundColor: '#B44434', paddingVertical: 15, borderRadius: 8, alignItems: 'center', marginTop: 10 },
   linkButonu: { marginTop: 15, alignSelf: 'flex-start' },
   linkMetni: { color: '#333', fontSize: 15, textDecorationLine: 'underline' },
-
-  tepeGrup: { alignItems: 'center', marginBottom: 10 },
-  tepeLogo: { width: 120, height: 40, marginBottom: 1 },
-  avAvciSatiri: { flexDirection: 'row', alignItems: 'center', width: '100%', paddingHorizontal: 10 },
-  avAvciIkonu: { width: 15, height: 15 },
-  ilerlemeBari: { flex: 1, height: 10, backgroundColor: '#E0E0E0', borderRadius: 5, marginHorizontal: 10, overflow: 'hidden' },
-  ilerlemeKirmiziAlan: { height: '100%', backgroundColor: '#C43325', borderRadius: 5 },
 });
