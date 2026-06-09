@@ -281,7 +281,7 @@ const chapters = [
 // ANA BİLEŞEN 
 // ====================================================
 function MobilProjem() {
-  const [activeTab, setActiveTab] = useState<'Giris' | 'Kayit' | 'main' | 'profile' | 'shop'>('Giris');
+  const [activeTab, setActiveTab] = useState<'Giris' | 'Kayit' | 'main' | 'profile' | 'shop' | 'about'>('Giris');
   const [elmas, setElmas] = useState(100);
   const [ownedItems, setOwnedItems] = useState<number[]>([1, 2, 3]);
   const [openSelectorTrigger, setOpenSelectorTrigger] = useState(0);
@@ -358,8 +358,11 @@ function MobilProjem() {
       {activeTab === 'shop' && (
         <ShopScreen onBack={goBack} elmas={elmas} ownedItems={ownedItems} onBuy={handleBuy} />
       )}
+      {activeTab === 'about' && (
+        <AboutScreen drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+      )}
 
-      {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop') && (
+      {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop' || activeTab === 'about') && (
         <>
           <View style={[styles.drawer, { transform: [{ translateX: drawerOpen ? 0 : -187 }] }]}>
             <TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('profile'); setDrawerOpen(false); }}>
@@ -374,7 +377,7 @@ function MobilProjem() {
               <Image source={require('./assets/lt-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
               <Text style={styles.drawerItemText}>Lider Tablosu</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.drawerItem} onPress={() => { setDrawerOpen(false); Alert.alert('Bilgi', 'Hakkımızda'); }}>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('about'); setDrawerOpen(false); }}>
               <Image source={require('./assets/info-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
               <Text style={styles.drawerItemText}>Hakkımızda</Text>
             </TouchableOpacity>
@@ -793,6 +796,72 @@ function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; 
 }
 
 // =====================
+// HAKKIMIZDA EKRANI
+// =====================
+function AboutScreen({ drawerOpen, setDrawerOpen }: { drawerOpen: boolean; setDrawerOpen: (v: boolean) => void }) {
+  return (
+    <View style={[styles.screenContainer, styles.screenContainerPadding]}>
+      <View style={[styles.aboutTopBar, styles.topBarFullWidth]}>
+        <TouchableOpacity style={styles.aboutTopLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
+          <Text style={styles.navIcon}>☰</Text>
+        </TouchableOpacity>
+
+        <View style={styles.aboutTopCenter}>
+          <Image
+            source={require('./assets/image6.jpeg')}
+            style={styles.aboutTopLogo}
+            resizeMode="contain"
+          />
+          <Text style={styles.aboutTopTitle}>Hakkımızda</Text>
+        </View>
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
+        <View style={styles.aboutContent}>
+          <View style={styles.aboutHeader}>
+          </View>
+
+          <View style={styles.aboutInfoCard}>
+            <View style={styles.aboutInfoRow}>
+              <Text style={styles.aboutInfoLabel}>Bölüm Adı:</Text>
+              <Text style={styles.aboutInfoValue}>Bilgisayar ve Öğretim Teknolojileri Eğitimi</Text>
+            </View>
+
+            <View style={styles.aboutInfoRow}>
+              <Text style={styles.aboutInfoLabel}>Dersin Adı:</Text>
+              <Text style={styles.aboutInfoValue}>Mobil Programlama</Text>
+            </View>
+
+            <View style={styles.aboutInfoRow}>
+              <Text style={styles.aboutInfoLabel}>Ders Danışmanı:</Text>
+              <Text style={styles.aboutInfoValue}>Prof. Dr. Alev ÖZKÖK</Text>
+            </View>
+
+            <View style={styles.aboutInfoRow}>
+              <Text style={styles.aboutInfoLabel}>Geliştirenler:</Text>
+              <View style={styles.aboutDevelopersList}>
+                <Text style={styles.aboutInfoValue}>Ahmet Latif ÇETİN</Text>
+                <Text style={styles.aboutInfoValue}>Işılsu CEYLAN</Text>
+                <Text style={styles.aboutInfoValue}>Mustafa GÜLMÜŞCAN</Text>
+                <Text style={styles.aboutInfoValue}>Semih KARTAL</Text>
+              </View>
+            </View>
+            
+
+            <View style={[styles.aboutInfoRow, { borderBottomWidth: 0 }]}>
+              <Text style={styles.aboutInfoLabel}>Dönem:</Text>
+              <Text style={styles.aboutInfoValue}>2025-2026 Öğretim Yılı Bahar Dönemi</Text>
+            </View>
+          </View>
+
+          <Text style={styles.aboutFooter}>Tüm Hakları Saklıdır. © 2026</Text>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
+// =====================
 // STİLLER (STYLES)
 // =====================
 const styles = StyleSheet.create({
@@ -987,6 +1056,44 @@ const styles = StyleSheet.create({
   ustBolum: { alignItems: 'center', marginTop: 30, marginBottom: 40 },
   anaBaslik: { fontSize: 28, fontWeight: 'bold', color: '#000' },
   kaydolButonu: { backgroundColor: '#B44434', paddingVertical: 15, borderRadius: 8, alignItems: 'center', marginTop: 10 },
-  linkButonu: { marginTop: 15, alignSelf: 'flex-start' },
-  linkMetni: { color: '#333', fontSize: 15, textDecorationLine: 'underline' },
+   linkButonu: { marginTop: 15, alignSelf: 'flex-start' },
+   linkMetni: { color: '#333', fontSize: 15, textDecorationLine: 'underline' },
+
+   aboutHeader: { alignItems: 'center', marginTop: 10, marginBottom: 24 },
+   aboutLogo: { width: 140, height: 140, borderRadius: 12, marginBottom: 20 },
+   aboutTitle: { fontSize: 22, fontWeight: '700', color: '#1a1a1a', marginBottom: 4 },
+   aboutVersion: { fontSize: 14, color: '#888', marginBottom: 24 },
+   aboutContent: { flex: 1, alignItems: 'center', paddingVertical: 10 },
+
+   aboutTopBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 52,
+    paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 6,
+    zIndex: 10,
+  },
+  aboutTopLeftMenu: { position: 'absolute', left: 16 },
+  aboutTopCenter: { flexDirection: 'row', alignItems: 'center', alignSelf: 'center', gap: 10 },
+  aboutTopLogo: { width: 48, height: 48 },
+  aboutTopTitle: { fontSize: 18, fontWeight: '400', color: '#1a1a1a' },
+
+   aboutInfoCard: { width: '100%', paddingTop: 55, marginBottom: 24, gap: 16 },
+   aboutInfoRow: { width: '100%', borderBottomWidth: 1, borderBottomColor: '#ddd', paddingBottom: 12 },
+   aboutInfoLabel: { fontSize: 14, fontWeight: '600', color: '#555', marginBottom: 6 },
+   aboutInfoValue: { fontSize: 15, color: '#1a1a1a', lineHeight: 20, textAlign: 'left' },
+   aboutDevelopersList: { width: '100%', gap: 4, },
+
+   aboutSection: { width: '100%', marginBottom: 20 },
+   aboutSectionTitle: { fontSize: 16, fontWeight: '600', color: '#1a1a1a', marginBottom: 8 },
+   aboutSectionText: { fontSize: 14, color: '#555', lineHeight: 20, textAlign: 'center' },
+   aboutFooter: { fontSize: 12, color: '#888', marginTop: 120, marginBottom: 30, textAlign: 'center' },
 });
