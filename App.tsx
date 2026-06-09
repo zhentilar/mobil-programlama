@@ -286,6 +286,29 @@ function MobilProjem() {
   const [ownedItems, setOwnedItems] = useState<number[]>([1, 2, 3]);
   const [openSelectorTrigger, setOpenSelectorTrigger] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [tabHistory, setTabHistory] = useState<string[]>(['Giris']);
+  const [showSelector, setShowSelector] = useState(true);
+
+  const navigateTo = (tab: typeof activeTab) => {
+    setTabHistory(prev => {
+      if (prev[prev.length - 1] === tab) return prev;
+      return [...prev, tab];
+    });
+    setActiveTab(tab);
+  };
+
+  const goBack = () => {
+    if (activeTab === 'main') {
+      setOpenSelectorTrigger(prev => prev + 1);
+      return;
+    }
+    setTabHistory(prev => {
+      if (prev.length <= 1) return prev;
+      const newHistory = prev.slice(0, -1);
+      setActiveTab(newHistory[newHistory.length - 1] as any);
+      return newHistory;
+    });
+  };
 
   const handleBuy = (itemId: number, price: number, name: string) => {
     if (ownedItems.includes(itemId)) {
@@ -330,20 +353,20 @@ function MobilProjem() {
         <MainScreen onEarnElmas={(amount) => setElmas(prev => prev + amount)} elmas={elmas} openSelectorTrigger={openSelectorTrigger} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       )}
       {activeTab === 'profile' && (
-        <ProfileScreen onShop={() => setActiveTab('shop')} ownedItems={ownedItems} elmas={elmas} />
+        <ProfileScreen onShop={() => navigateTo('shop')} ownedItems={ownedItems} elmas={elmas} />
       )}
       {activeTab === 'shop' && (
-        <ShopScreen onBack={() => setActiveTab('profile')} elmas={elmas} ownedItems={ownedItems} onBuy={handleBuy} />
+        <ShopScreen onBack={goBack} elmas={elmas} ownedItems={ownedItems} onBuy={handleBuy} />
       )}
 
       {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop') && (
         <>
           <View style={[styles.drawer, { transform: [{ translateX: drawerOpen ? 0 : -187 }] }]}>
-            <TouchableOpacity style={styles.drawerItem} onPress={() => { setActiveTab('profile'); setDrawerOpen(false); }}>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('profile'); setDrawerOpen(false); }}>
               <Image source={require('./assets/profile-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
               <Text style={styles.drawerItemText}>Profil</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.drawerItem} onPress={() => { setActiveTab('shop'); setDrawerOpen(false); }}>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('shop'); setDrawerOpen(false); }}>
               <Image source={require('./assets/takas-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
               <Text style={styles.drawerItemText}>Takas</Text>
             </TouchableOpacity>
@@ -359,16 +382,16 @@ function MobilProjem() {
           {drawerOpen && <TouchableOpacity style={styles.drawerOverlay} activeOpacity={1} onPress={() => setDrawerOpen(false)} />}
           <View style={styles.bottomNav}>
             <TouchableOpacity onPress={() => setDrawerOpen(prev => !prev)} style={styles.navItem}>
-              <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>☰</Text>
+              <Image source={require('./assets/menu-icon.png')} style={styles.navIconImage} resizeMode="contain" />
               <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Menü</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setActiveTab('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
-              <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>⌂</Text>
+            <TouchableOpacity onPress={() => { navigateTo('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
+              <Image source={require('./assets/homepage-icon.png')} style={styles.navIconImage} resizeMode="contain" />
               <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setActiveTab('shop')} style={styles.navItem}>
-              <Text style={[styles.navIcon, activeTab === 'shop' && styles.navActive]}>🛒</Text>
-              <Text style={[styles.navLabel, activeTab === 'shop' && styles.navActive]}>Dükkan</Text>
+            <TouchableOpacity onPress={goBack} style={styles.navItem}>
+              <Image source={require('./assets/back-icon.png')} style={styles.navIconImage} resizeMode="contain" />
+              <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Geri</Text>
             </TouchableOpacity>
           </View>
         </>
@@ -780,6 +803,7 @@ const styles = StyleSheet.create({
    bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff', zIndex: 10 },
    navItem: { alignItems: 'center' },
    navIcon: { fontSize: 22, color: '#888' },
+   navIconImage: { width: 32, height: 32 },
    navLabel: { fontSize: 10, color: '#888', marginTop: 2 },
    navActive: { color: '#C0392B' },
 
