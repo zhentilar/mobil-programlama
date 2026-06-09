@@ -1,0 +1,20 @@
+# ninja log v5
+11	89	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef
+68	23063	7977648960521056	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/85b0261fb03389c960cd931eeeda0801/source/codegen/jni/react/renderer/components/safeareacontext/States.cpp.o	dd51771361ba1c32
+22	25106	7977648980519466	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/87184bb1ce76e5a2446df95fc406d687/codegen/jni/react/renderer/components/safeareacontext/EventEmitters.cpp.o	32e67ac11ad04cdf
+50	27614	7977649006678537	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/399080d56ee72630ecbefe9f0e1fb95e/android/build/generated/source/codegen/jni/safeareacontext-generated.cpp.o	9724c11198275f48
+87	29870	7977649029181431	CMakeFiles/appmodules.dir/OnLoad.cpp.o	3b91833abda37d3d
+12	38233	7977649112095699	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/3fac4cbeb4243920b0b34be488f7cce5/cpp/react/renderer/components/safeareacontext/RNCSafeAreaViewState.cpp.o	4076e442b65439f2
+59	38678	7977649117066880	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/87184bb1ce76e5a2446df95fc406d687/codegen/jni/react/renderer/components/safeareacontext/ShadowNodes.cpp.o	dc7d0504173c02f6
+40	40673	7977649137094091	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/85b0261fb03389c960cd931eeeda0801/source/codegen/jni/react/renderer/components/safeareacontext/Props.cpp.o	5b2675f3edab618e
+31	41510	7977649145799439	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/c06a4da8c84b5503a3fefd4365305ce1/jni/react/renderer/components/safeareacontext/ComponentDescriptors.cpp.o	524def1c3a883064
+3	42215	7977649153033956	safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir/c908aa76e8dabc918d08c48694191b17/react/renderer/components/safeareacontext/RNCSafeAreaViewShadowNode.cpp.o	6bf1766aefff31be
+77	42340	7977649154002990	CMakeFiles/appmodules.dir/C_/Projem/mobilprogramlama/android/app/build/generated/autolinking/src/main/jni/autolinking.cpp.o	e658a0f77f23f304
+42216	42725	7977649158089685	C:/Projem/mobilprogramlama/android/app/build/intermediates/cxx/Debug/3z1ir471/obj/x86/libreact_codegen_safeareacontext.so	9248be705b7d0294
+42726	42966	7977649160627268	C:/Projem/mobilprogramlama/android/app/build/intermediates/cxx/Debug/3z1ir471/obj/x86/libappmodules.so	1c26f8371d60395a
+11	124	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef
+9	90	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef
+3	43	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef
+4	39	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef
+3	35	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef
+6	53	0	C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/x86/CMakeFiles/cmake.verify_globs	95077a62a43e58ef

@@ -1,0 +1,4 @@
+C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/armeabi-v7a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/foo.dir
+C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/armeabi-v7a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/boo.dir
+C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/armeabi-v7a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/edit_cache.dir
+C:/Projem/mobilprogramlama/android/app/.cxx/Debug/3z1ir471/armeabi-v7a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/rebuild_cache.dir

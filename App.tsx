@@ -250,6 +250,41 @@ const baseScreens = [
     isCustomLayout: true,
     customType: 'psikolojikBaski',
   },
+  {
+    id: 10,
+    title: 'HOŞ GELDİN isilsuceylan!',
+    subtitle: 'EFSANE GİRİŞ ÖDÜLÜNÜ BULDUN!',
+    primaryBtn: 'ÖDÜLÜ AL',
+    secondaryBtn: 'VAZGEÇ',
+    darkPatternTitle: 'Gizli Maliyet Tuzağı', 
+    darkPatternDesc: 'Büyük ödül gibi sunulan teklifin aslında ücretli bir abonelik olduğunu küçük yazılardan fark ettin ve tuzağa düşmedin! Harika bir Avcı hamlesi!',
+    image: require('./Gorseller/sandik.png'), 
+    isCustomLayout: false, 
+  },
+  {
+    id: 11,
+    title: 'TUZAK ETKİNLEŞTİRİLDİ!',
+    subtitle: 'Ödülü almak için Premium\'a kaydolmalısın.',
+    primaryBtn: 'DEVAM ET',
+    secondaryBtn: 'VAZGEÇ',
+    darkPatternTitle: 'Varsayılan Seçim Tuzağı',
+    darkPatternDesc: 'Sana sorulmadan en pahalı abonelik seçeneğinin otomatik olarak işaretlendiğini fark ettin ve bu tuzağa düşmedin. Başarılı bir hamle!',
+    image: null,
+    isCustomLayout: true,
+    customType: 'abonelikSecimi',
+  },
+  {
+    id: 12,
+    title: 'TUZAK 2 ETKİNLEŞTİRİLDİ!',
+    subtitle: 'Lütfen kredi kartı veya banka kartı bilgilerinizi giriniz.',
+    primaryBtn: 'KAYDET VE ÖDE',
+    secondaryBtn: 'VAZGEÇ',
+    darkPatternTitle: 'Veri Toplama / Sahte Ödeme',
+    darkPatternDesc: 'Gereksiz yere hassas finansal bilgilerini isteyen bu formun bir tuzak olduğunu anladın. Avcı yeteneklerin gelişiyor!',
+    image: null,
+    isCustomLayout: true,
+    customType: 'krediKartiEkrani',
+  },
 ];
 
 const initialInventory = [
@@ -274,7 +309,7 @@ const chapters = [
   { id: 1, title: 'Bölüm 1', screens: [baseScreens[0], baseScreens[1], baseScreens[2]] },
   { id: 2, title: 'Bölüm 2', screens: [baseScreens[3], baseScreens[4], baseScreens[5]] },
   { id: 3, title: 'Bölüm 3', screens: [baseScreens[6], baseScreens[7], baseScreens[8]] },
-  { id: 4, title: 'Bölüm 4', screens: [] },
+  { id: 4, title: 'Bölüm 4', screens: [baseScreens[9], baseScreens[10], baseScreens[11]] },,
 ];
 
 // ====================================================
@@ -412,6 +447,12 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
   const [infoVisible, setInfoVisible] = useState(false);
   const [showSelector, setShowSelector] = useState(true);
   const [onayli, setOnayli] = useState(true);
+  const [aylikSecili, setAylikSecili] = useState(true);
+  const [yillikSecili, setYillikSecili] = useState(false);
+  const [kartNo, setKartNo] = useState('');
+  const [sonKullanma, setSonKullanma] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [isim, setIsim] = useState('');
   
   useEffect(() => {
     if (typeof openSelectorTrigger !== 'undefined') {
@@ -608,15 +649,53 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
               <Text style={styles.subtitle}>{current!.subtitle}</Text>
             </View>
 
-            <View style={styles.gorselKapsayiciKutusu}>
-              <Image source={current!.image} style={styles.image} resizeMode="contain" />
-            </View>
+            {current!.image && (
+              <View style={styles.gorselKapsayiciKutusu}>
+                <Image source={current!.image} style={styles.image} resizeMode="contain" />
+              </View>
+            )}
 
             {current?.customType === 'checkboxTuzagi' && (
               <TouchableOpacity style={styles.onayKutusuSatiri} onPress={() => setOnayli(!onayli)}>
                 <Text style={styles.onayKutusuIkonu}>{onayli ? '☑' : '☐'}</Text>
                 <Text style={styles.onayKutusuMetni}>Ayda 9.90 dolar</Text>
               </TouchableOpacity>
+            )}
+            {current?.customType === 'abonelikSecimi' && (
+              <View style={styles.abonelikKutusu}>
+                <Text style={styles.abonelikBaslik}>HER GİRİŞİNDE YÜZLERCE ELMAS HESABINDA!</Text>
+                <TouchableOpacity style={styles.abonelikSecenek} onPress={() => setAylikSecili(!aylikSecili)}>
+                  <Text style={styles.onayKutusuIkonu}>{aylikSecili ? '☑' : '☐'}</Text>
+                  <Text style={styles.abonelikMetin}>89,99₺/Aylık</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.abonelikSecenek} onPress={() => setYillikSecili(!yillikSecili)}>
+                  <Text style={styles.onayKutusuIkonu}>{yillikSecili ? '☑' : '☐'}</Text>
+                  <Text style={styles.abonelikMetin}>989,99₺/Yıllık</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {current?.customType === 'krediKartiEkrani' && (
+              <View style={styles.kartKutusu}>
+                <Text style={styles.kartOdemeBaslik}>ÖDEME DETAYLARI</Text>
+                <View style={styles.kartIcerik}>
+                  <Text style={styles.kartVisa}>💳 VISA</Text>
+                  <Text style={styles.inputLabel}>Kredi Kartı Numarası</Text>
+                  <TextInput style={styles.kartInput} placeholder="0000 0000 0000 0000" keyboardType="numeric" value={kartNo} onChangeText={setKartNo} />
+                  <View style={styles.kartRow}>
+                    <View style={{flex: 1, marginRight: 10}}>
+                      <Text style={styles.inputLabel}>Son Kullanma Tarihi (AA/YY)</Text>
+                      <TextInput style={styles.kartInput} placeholder="AA/YY" value={sonKullanma} onChangeText={setSonKullanma} />
+                    </View>
+                    <View style={{flex: 1}}>
+                      <Text style={styles.inputLabel}>CVV</Text>
+                      <TextInput style={styles.kartInput} placeholder="CVV" keyboardType="numeric" value={cvv} onChangeText={setCvv} />
+                    </View>
+                  </View>
+                  <Text style={styles.inputLabel}>Kart Üzerindeki İsim</Text>
+                  <TextInput style={styles.kartInput} placeholder="İsim Soyisim" value={isim} onChangeText={setIsim} />
+                </View>
+              </View>
             )}
 
             <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
@@ -938,7 +1017,7 @@ const styles = StyleSheet.create({
   nodeIconImage: { width: 24, height: 24, tintColor: '#fff' },
   avatarRow: { marginTop: 18, alignItems: 'center' },
   avatarCircle: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#bdbdbd', alignItems: 'center', justifyContent: 'center', borderWidth: 4, borderColor: '#fff' },
-  
+  gorselKapsayiciKutusu: { width: '100%', alignItems: 'center', justifyContent: 'center' },
   image: { 
     width: '100%', 
     height: 280, 
@@ -1096,4 +1175,15 @@ const styles = StyleSheet.create({
    aboutSectionTitle: { fontSize: 16, fontWeight: '600', color: '#1a1a1a', marginBottom: 8 },
    aboutSectionText: { fontSize: 14, color: '#555', lineHeight: 20, textAlign: 'center' },
    aboutFooter: { fontSize: 12, color: '#888', marginTop: 120, marginBottom: 30, textAlign: 'center' },
+   abonelikKutusu: { borderWidth: 1, borderColor: '#C0392B', borderRadius: 8, padding: 20, marginVertical: 15, backgroundColor: '#fff', elevation: 3 },
+  abonelikBaslik: { fontSize: 16, fontWeight: 'bold', textAlign: 'center', marginBottom: 20, color: '#000' },
+  abonelikSecenek: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
+  abonelikMetin: { fontSize: 16, color: '#333' },
+  kartKutusu: { marginVertical: 15 },
+  kartOdemeBaslik: { fontSize: 16, fontWeight: 'bold', textAlign: 'center', marginBottom: 10, color: '#000' },
+  kartIcerik: { borderWidth: 1, borderColor: '#C0392B', borderRadius: 8, padding: 15, backgroundColor: '#fff', elevation: 3 },
+  kartVisa: { textAlign: 'center', fontSize: 16, fontWeight: 'bold', marginBottom: 15, color: '#333' },
+  kartInput: { backgroundColor: '#E0E0E0', borderRadius: 4, height: 40, paddingHorizontal: 10, marginBottom: 15, color: '#333' },
+  inputLabel: { fontSize: 12, color: '#333', marginBottom: 5 },
+  kartRow: { flexDirection: 'row', justifyContent: 'space-between' },
 });
