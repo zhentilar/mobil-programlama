@@ -285,6 +285,7 @@ function MobilProjem() {
   const [elmas, setElmas] = useState(100);
   const [ownedItems, setOwnedItems] = useState<number[]>([1, 2, 3]);
   const [openSelectorTrigger, setOpenSelectorTrigger] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleBuy = (itemId: number, price: number, name: string) => {
     if (ownedItems.includes(itemId)) {
@@ -326,7 +327,7 @@ function MobilProjem() {
       )}
 
       {activeTab === 'main' && (
-        <MainScreen onEarnElmas={(amount) => setElmas(prev => prev + amount)} elmas={elmas} openSelectorTrigger={openSelectorTrigger} />
+        <MainScreen onEarnElmas={(amount) => setElmas(prev => prev + amount)} elmas={elmas} openSelectorTrigger={openSelectorTrigger} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
       )}
       {activeTab === 'profile' && (
         <ProfileScreen onShop={() => setActiveTab('shop')} ownedItems={ownedItems} elmas={elmas} />
@@ -336,20 +337,41 @@ function MobilProjem() {
       )}
 
       {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop') && (
-        <View style={styles.bottomNav}>
-          <TouchableOpacity onPress={() => setActiveTab('profile')} style={styles.navItem}>
-            <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>☰</Text>
-            <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Profil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { setActiveTab('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
-            <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>⌂</Text>
-            <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setActiveTab('shop')} style={styles.navItem}>
-            <Text style={[styles.navIcon, activeTab === 'shop' && styles.navActive]}>🛒</Text>
-            <Text style={[styles.navLabel, activeTab === 'shop' && styles.navActive]}>Dükkan</Text>
-          </TouchableOpacity>
-        </View>
+        <>
+          <View style={[styles.drawer, { transform: [{ translateX: drawerOpen ? 0 : -187 }] }]}>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { setActiveTab('profile'); setDrawerOpen(false); }}>
+              <Image source={require('./assets/profile-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
+              <Text style={styles.drawerItemText}>Profil</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { setActiveTab('shop'); setDrawerOpen(false); }}>
+              <Image source={require('./assets/takas-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
+              <Text style={styles.drawerItemText}>Takas</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { setDrawerOpen(false); Alert.alert('Bilgi', 'Lider Tablosu'); }}>
+              <Image source={require('./assets/lt-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
+              <Text style={styles.drawerItemText}>Lider Tablosu</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.drawerItem} onPress={() => { setDrawerOpen(false); Alert.alert('Bilgi', 'Hakkımızda'); }}>
+              <Image source={require('./assets/info-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
+              <Text style={styles.drawerItemText}>Hakkımızda</Text>
+            </TouchableOpacity>
+          </View>
+          {drawerOpen && <TouchableOpacity style={styles.drawerOverlay} activeOpacity={1} onPress={() => setDrawerOpen(false)} />}
+          <View style={styles.bottomNav}>
+            <TouchableOpacity onPress={() => setDrawerOpen(prev => !prev)} style={styles.navItem}>
+              <Text style={[styles.navIcon, activeTab === 'profile' && styles.navActive]}>☰</Text>
+              <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Menü</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setActiveTab('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
+              <Text style={[styles.navIcon, activeTab === 'main' && styles.navActive]}>⌂</Text>
+              <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setActiveTab('shop')} style={styles.navItem}>
+              <Text style={[styles.navIcon, activeTab === 'shop' && styles.navActive]}>🛒</Text>
+              <Text style={[styles.navLabel, activeTab === 'shop' && styles.navActive]}>Dükkan</Text>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
     </SafeAreaView>
   );
@@ -360,7 +382,7 @@ export { MobilProjem as default, MobilProjem as App };
 // =====================
 // ANA HARİTA EKRANI
 // =====================
-function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: (n: number) => void; elmas: number; openSelectorTrigger?: number }) {
+function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDrawerOpen }: { onEarnElmas: (n: number) => void; elmas: number; openSelectorTrigger?: number; drawerOpen: boolean; setDrawerOpen: (v: boolean) => void }) {
   const [infoVisible, setInfoVisible] = useState(false);
   const [showSelector, setShowSelector] = useState(true);
   const [onayli, setOnayli] = useState(true);
@@ -479,7 +501,7 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger }: { onEarnElmas: 
   return (
     <View style={[styles.screenContainer, styles.screenContainerPadding, { paddingTop: 60 }]}>
       {showSelector && (
-        <TouchableOpacity style={styles.topLeftMenu} onPress={() => {}}>
+        <TouchableOpacity style={styles.topLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
           <Text style={styles.navIcon}>☰</Text>
         </TouchableOpacity>
       )}
@@ -755,13 +777,18 @@ const styles = StyleSheet.create({
   screenContainer: { flex: 1 }, 
   screenContainerPadding: { paddingHorizontal: 20 },
 
-  bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff' },
-  navItem: { alignItems: 'center' },
-  navIcon: { fontSize: 22, color: '#888' },
-  navLabel: { fontSize: 10, color: '#888', marginTop: 2 },
-  navActive: { color: '#C0392B' },
+   bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff', zIndex: 10 },
+   navItem: { alignItems: 'center' },
+   navIcon: { fontSize: 22, color: '#888' },
+   navLabel: { fontSize: 10, color: '#888', marginTop: 2 },
+   navActive: { color: '#C0392B' },
 
-  topBar: { 
+     drawer: { position: 'absolute', left: 0, top: 62, bottom: 55, width: 187, backgroundColor: '#E8E8E8', zIndex: 5, paddingTop: 70, paddingHorizontal: 16 },
+     drawerItem: { paddingVertical: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
+     drawerItemIcon: { width: 22, height: 22 },
+     drawerItemText: { fontSize: 16, color: '#333', fontWeight: '500' },
+
+   topBar: { 
     flexDirection: 'row', 
     justifyContent: 'flex-end', 
     alignItems: 'center', 
