@@ -1,1 +1,0 @@
-C:\Projem\mobilprogramlama\android\app\build\intermediates\cxx\Debug\3z1ir471\obj\arm64-v8a
