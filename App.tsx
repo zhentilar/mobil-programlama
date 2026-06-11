@@ -11,7 +11,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-
+import kullaniciListesi from './kullanicilar.json';
 const { width } = Dimensions.get('window');
 
 // =====================
@@ -21,6 +21,24 @@ function GirisEkrani(props: any) {
   const [eposta, setEposta] = React.useState('');
   const [sifre, setSifre] = React.useState('');
 
+  const handleGirisYap = () => {
+    if (!eposta || !sifre) {
+      Alert.alert('Hata', 'Lütfen e-posta ve şifre alanlarını doldurun');
+      return;
+    }
+
+    const bulunanKullanici = kullaniciListesi.find(
+      (user) => user.Eposta.toLowerCase() === eposta.toLowerCase() && user.Sifre === sifre
+    );
+
+    if (bulunanKullanici) {
+      Alert.alert('Giriş Başarılı', `Hoş geldin, ${bulunanKullanici.Ad} usta!`, [
+        { text: 'Haritaya Git', onPress: () => props.setAnaEkran('main') }
+      ]);
+    } else {
+      Alert.alert('Hata', 'E-posta veya şifre hatalı!');
+    }
+  };
   return (
     <View style={styles.icKapsayici}>
       <View style={styles.logoBolumu}>
@@ -57,7 +75,7 @@ function GirisEkrani(props: any) {
 
         <TouchableOpacity 
           style={styles.girisButonu} 
-          onPress={() => props.setAnaEkran('main')} 
+          onPress={handleGirisYap}
         >
           <Text style={styles.butonMetni}>Giriş</Text>
         </TouchableOpacity>
