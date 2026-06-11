@@ -619,9 +619,13 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
             ))}
           </View>
 
-          <View style={styles.avatarRow}>
-            <View style={styles.avatarCircle}>
-              <Text style={{ fontSize: 28, color: '#fff' }}>👤</Text>
+          <View>
+            <View>
+              <Image 
+                source={require('./assets/profile.png')}
+                style={styles.avatar}
+                resizeMode="contain" 
+              />
             </View>
           </View>
         </View>
@@ -1085,7 +1089,6 @@ screenContainer: { flex: 1 },
    navItem: { alignItems: 'center' },
    navIcon: { fontSize: 22, color: '#888' },
    navIconImage: { width: 36, height: 36 },
-   navActive: { color: '#C0392B' },
 
      drawer: { position: 'absolute', left: 0, top: 62, bottom: 55, width: 187, backgroundColor: '#E8E8E8', zIndex: 5, paddingTop: 70, paddingHorizontal: 16 },
      drawerItem: { paddingVertical: 16, flexDirection: 'row', alignItems: 'center', gap: 12 },
