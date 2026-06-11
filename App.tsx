@@ -11,7 +11,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-
+import kullaniciListesi from './kullanicilar.json';
 const { width } = Dimensions.get('window');
 
 // =====================
@@ -25,7 +25,7 @@ function GirisEkrani(props: any) {
     if (!eposta || !sifre) {
       Alert.alert('Hata', 'Lütfen e-posta ve şifre alanlarını doldurun');
       return;
-    } 
+    }
 
     const bulunanKullanici = kullaniciListesi.find(
       (user) => user.Eposta.toLowerCase() === eposta.toLowerCase() && user.Sifre === sifre
