@@ -424,15 +424,15 @@ function MobilProjem() {
           <View style={styles.bottomNav}>
             <TouchableOpacity onPress={() => setDrawerOpen(prev => !prev)} style={styles.navItem}>
               <Image source={require('./assets/menu-icon.png')} style={styles.navIconImage} resizeMode="contain" />
-              <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Menü</Text>
+              
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { navigateTo('main'); setOpenSelectorTrigger(prev => prev + 1); }} style={styles.navItem}>
               <Image source={require('./assets/homepage-icon.png')} style={styles.navIconImage} resizeMode="contain" />
-              <Text style={[styles.navLabel, activeTab === 'main' && styles.navActive]}>Ana</Text>
+              
             </TouchableOpacity>
             <TouchableOpacity onPress={goBack} style={styles.navItem}>
               <Image source={require('./assets/back-icon.png')} style={styles.navIconImage} resizeMode="contain" />
-              <Text style={[styles.navLabel, activeTab === 'profile' && styles.navActive]}>Geri</Text>
+              
             </TouchableOpacity>
           </View>
         </>
@@ -587,7 +587,8 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
           />
         </View>
         <View style={styles.elmasBadge}>
-          <Text style={styles.elmasText}>💎 {elmas}</Text>
+          <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIcon} resizeMode="contain" />
+          <Text style={styles.elmasText}>{elmas}</Text>
         </View>
       </View>
 
@@ -720,7 +721,10 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
                 <Text style={styles.infoTitle}>{current!.darkPatternTitle}</Text>
                 <Text style={styles.infoDesc}>{current!.darkPatternDesc}</Text>
                 {earnedThisRound !== null && (
-                  <Text style={styles.earnedText}>💎 +{earnedThisRound} elmas kazandın!</Text>
+                  <View style={styles.earnedTextRow}>
+                    <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIconSmall} resizeMode="contain" />
+                    <Text style={styles.earnedText}>+{earnedThisRound} elmas kazandın!</Text>
+                  </View>
                 )}
                 <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
                   <Text style={styles.nextBtnText}>
@@ -774,7 +778,8 @@ function ProfileScreen({ onShop, ownedItems, elmas }: { onShop: () => void; owne
 </View>
         <Text style={styles.username}>Kullanıcı Adı</Text>
         <View style={styles.elmasBadge}>
-          <Text style={styles.elmasText}>💎 {elmas} elmas</Text>
+          <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIcon} resizeMode="contain" />
+          <Text style={styles.elmasText}>{elmas} elmas</Text>
         </View>
       </View>
 
@@ -834,14 +839,15 @@ function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; 
 
   return (
     <View style={[styles.screenContainer, styles.screenContainerPadding]}>
-      <View style={styles.shopHeader}>
-        <TouchableOpacity onPress={onBack}>
-          <Text style={styles.backBtn}>← Takas Dükkanı</Text>
-        </TouchableOpacity>
-        <View style={styles.elmasBadge}>
-          <Text style={styles.elmasText}>💎 {elmas}</Text>
-        </View>
-      </View>
+<View style={styles.shopHeader}>
+         <TouchableOpacity onPress={onBack}>
+           <Text style={styles.backBtn}>← Takas Dükkanı</Text>
+         </TouchableOpacity>
+         <View style={styles.elmasBadge}>
+           <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIcon} resizeMode="contain" />
+           <Text style={styles.elmasText}>{elmas}</Text>
+         </View>
+       </View>
 
       <View style={styles.filterRow}>
         {(['tumu', 'karakter', 'aksesuar'] as const).map(f => (
@@ -878,9 +884,8 @@ function ShopScreen({ onBack, elmas, ownedItems, onBuy }: { onBack: () => void; 
                   </View>
                 ) : (
                   <View style={styles.shopPriceTop}>
-                    <Text style={[styles.shopPriceText, !canAfford && styles.shopPriceCantAfford]}>
-                      💎 {item.price}
-                    </Text>
+                    <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIconSmall} resizeMode="contain" />
+                    <Text style={[styles.shopPriceText, !canAfford && styles.shopPriceCantAfford]}>{item.price}</Text>
                   </View>
                 )}
                 <Image source={item.image} style={[styles.shopItemImage, owned && { opacity: 0.5 }]} resizeMode="contain" />
@@ -988,7 +993,7 @@ function LeaderboardScreen({ onBack, elmas, drawerOpen, setDrawerOpen }: { onBac
       <Image source={require('./assets/wallpaper.png')} style={styles.backgroundWatermark} resizeMode="contain" />
       <TouchableOpacity style={styles.topLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
         <Text style={styles.navIcon}>☰</Text>
-      </TouchableOpacity>
+</TouchableOpacity>
       <View style={[styles.topBar, styles.topBarFullWidth, styles.topBarSelector]}>
         <View style={styles.logoContainer}>
           <Image
@@ -998,7 +1003,8 @@ function LeaderboardScreen({ onBack, elmas, drawerOpen, setDrawerOpen }: { onBac
           />
         </View>
         <View style={styles.elmasBadge}>
-          <Text style={styles.elmasText}>💎 {elmas}</Text>
+          <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIcon} resizeMode="contain" />
+          <Text style={styles.elmasText}>{elmas}</Text>
         </View>
       </View>
 
@@ -1010,38 +1016,50 @@ function LeaderboardScreen({ onBack, elmas, drawerOpen, setDrawerOpen }: { onBac
             <Image source={topUsers[0].image} style={styles.topUserImage} resizeMode="cover" />
           </View>
           <Text style={styles.topUsername}>{topUsers[0].username}</Text>
-          <Text style={styles.topUserElmas}>💎 {topUsers[0].elmas}</Text>
-        </View>
-        <View style={[styles.topUserItem, styles.secondPlaceItem]}>
-          <View style={styles.topUserCircle}>
-            <Image source={topUsers[1].image} style={styles.topUserImage} resizeMode="cover" />
-          </View>
-          <Text style={styles.topUsername}>{topUsers[1].username}</Text>
-          <Text style={styles.topUserElmas}>💎 {topUsers[1].elmas}</Text>
-        </View>
-        <View style={[styles.topUserItem, styles.thirdPlaceItem]}>
-          <View style={styles.topUserCircle}>
-            <Image source={topUsers[2].image} style={styles.topUserImage} resizeMode="cover" />
-          </View>
-          <Text style={styles.topUsername}>{topUsers[2].username}</Text>
-          <Text style={styles.topUserElmas}>💎 {topUsers[2].elmas}</Text>
-        </View>
+<View style={styles.topUserElmasRow}>
+             <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIconSmall} resizeMode="contain" />
+             <Text style={styles.topUserElmas}>{topUsers[0].elmas}</Text>
+           </View>
+         </View>
+         <View style={[styles.topUserItem, styles.secondPlaceItem]}>
+           <View style={styles.topUserCircle}>
+             <Image source={topUsers[1].image} style={styles.topUserImage} resizeMode="cover" />
+           </View>
+           <Text style={styles.topUsername}>{topUsers[1].username}</Text>
+           <View style={styles.topUserElmasRow}>
+             <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIconSmall} resizeMode="contain" />
+             <Text style={styles.topUserElmas}>{topUsers[1].elmas}</Text>
+           </View>
+         </View>
+         <View style={[styles.topUserItem, styles.thirdPlaceItem]}>
+           <View style={styles.topUserCircle}>
+             <Image source={topUsers[2].image} style={styles.topUserImage} resizeMode="cover" />
+           </View>
+           <Text style={styles.topUsername}>{topUsers[2].username}</Text>
+           <View style={styles.topUserElmasRow}>
+             <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIconSmall} resizeMode="contain" />
+             <Text style={styles.topUserElmas}>{topUsers[2].elmas}</Text>
+           </View>
+         </View>
       </View>
 
-      <View style={styles.otherUsersContainer}>
-        {otherUsers.map((user) => (
-          <View key={user.id} style={styles.otherUserRow}>
-            <Text style={styles.rankText}>#{user.id}</Text>
-            <View style={styles.otherUserCircle}>
-              <Image source={user.image} style={styles.otherUserImage} resizeMode="cover" />
-            </View>
-            <View style={styles.otherUserInfo}>
-              <Text style={styles.otherUsername}>{user.username}</Text>
-              <Text style={styles.otherUserElmas}>💎 {user.elmas}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
+<View style={styles.otherUsersContainer}>
+         {otherUsers.map((user) => (
+           <View key={user.id} style={styles.otherUserRow}>
+             <Text style={styles.rankText}>#{user.id}</Text>
+             <View style={styles.otherUserCircle}>
+               <Image source={user.image} style={styles.otherUserImage} resizeMode="cover" />
+             </View>
+             <View style={styles.otherUserInfo}>
+               <Text style={styles.otherUsername}>{user.username}</Text>
+               <View style={styles.otherUserElmasRow}>
+                 <Image source={require('./assets/diamond-icon.png')} style={styles.diamondIconSmall} resizeMode="contain" />
+                 <Text style={styles.otherUserElmas}>{user.elmas}</Text>
+               </View>
+             </View>
+           </View>
+         ))}
+       </View>
     </View>
   );
 }
@@ -1066,8 +1084,7 @@ screenContainer: { flex: 1 },
    bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff', zIndex: 10 },
    navItem: { alignItems: 'center' },
    navIcon: { fontSize: 22, color: '#888' },
-   navIconImage: { width: 32, height: 32 },
-   navLabel: { fontSize: 10, color: '#888', marginTop: 2 },
+   navIconImage: { width: 36, height: 36 },
    navActive: { color: '#C0392B' },
 
      drawer: { position: 'absolute', left: 0, top: 62, bottom: 55, width: 187, backgroundColor: '#E8E8E8', zIndex: 5, paddingTop: 70, paddingHorizontal: 16 },
@@ -1103,9 +1120,11 @@ screenContainer: { flex: 1 },
   },
   logoImage: { width: 65, height: 65 }, 
   
-  elmasBadge: { backgroundColor: '#fdecea', borderRadius: 999, paddingHorizontal: 16, paddingVertical: 4, marginRight: 16 },
-  elmasText: { fontSize: 13, fontWeight: '600', color: '#C0392B' },
-  topLeftMenu: { position: 'absolute', left: 20, top: 10, zIndex: 30 },
+elmasBadge: { borderRadius: 999, paddingHorizontal: 16, paddingVertical: 4, marginRight: 16, flexDirection: 'row', alignItems: 'center', gap: 4 },
+   elmasText: { fontSize: 13, fontWeight: '600' },
+   diamondIcon: { width: 16, height: 16 },
+   diamondIconSmall: { width: 12, height: 12 },
+   topLeftMenu: { position: 'absolute', left: 20, top: 10, zIndex: 30 },
 
   progressContainer: { 
     flexDirection: 'row', 
@@ -1173,6 +1192,7 @@ screenContainer: { flex: 1 },
   infoTitle: { fontSize: 14, fontWeight: '700', color: '#C0392B', marginBottom: 4, textAlign: 'center' },
   infoDesc: { fontSize: 13, color: '#555', textAlign: 'center', lineHeight: 18 },
   earnedText: { fontSize: 14, fontWeight: '700', color: '#C0392B', textAlign: 'center', marginTop: 8 },
+   earnedTextRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 8, gap: 4 },
   infoNext: { fontSize: 13, color: '#C0392B', textAlign: 'center', marginTop: 8, fontWeight: '600' },
   nextBtn: { marginTop: 10, backgroundColor: '#C0392B', borderRadius: 999, padding: 10, alignItems: 'center' },
   nextBtnText: { color: '#fff', fontWeight: '600', fontSize: 14 },
@@ -1206,7 +1226,7 @@ screenContainer: { flex: 1 },
   shopCard: { width: (width - 60) / 3, backgroundColor: '#f9f9f9', borderRadius: 12, padding: 10, alignItems: 'center', position: 'relative' },
   shopCardOwned: { backgroundColor: '#f0f0f0' },
   shopItemImage: { width: 60, height: 60, marginBottom: 4, marginTop: 8 },
-  shopPriceTop: { position: 'absolute', top: 8, right: 6 },
+  shopPriceTop: { position: 'absolute', top: 8, right: 6, flexDirection: 'row', alignItems: 'center', gap: 2 },
   shopPriceText: { fontSize: 10, color: '#C0392B', fontWeight: '600' },
   shopPriceCantAfford: { color: '#aaa' },
   rareBadge: { position: 'absolute', top: 8, left: 6, backgroundColor: '#C0392B', borderRadius: 4, paddingHorizontal: 4, paddingVertical: 2 },
@@ -1380,11 +1400,15 @@ thirdPlaceItem: {
       color: '#1a1a1a',
       marginTop: 8,
     },
-    topUserElmas: {
-      fontSize: 12,
-      color: '#C0392B',
-      marginTop: 4,
-    },
+topUserElmas: {
+           fontSize: 12,
+         },
+     topUserElmasRow: {
+           flexDirection: 'row',
+           alignItems: 'center',
+           gap: 2,
+           marginTop: 4,
+         },
     otherUsersContainer: {
      width: '100%',
      marginTop: 10,
@@ -1392,12 +1416,11 @@ thirdPlaceItem: {
    otherUserRow: {
      flexDirection: 'row',
      alignItems: 'center',
-     paddingVertical: 12,
+     paddingVertical: 16,
    },
    rankText: {
      fontSize: 16,
      fontWeight: 'bold',
-     color: '#C0392B',
      width: 40,
    },
    otherUserInfo: {
@@ -1412,19 +1435,20 @@ otherUsername: {
     },
     otherUserElmas: {
       fontSize: 14,
-      color: '#C0392B',
     },
     otherUserCircle: {
-      width: 36,
-      height: 36,
-      borderRadius: 18,
+      width: 48,
+      height: 48,
+      borderRadius: 24,
       backgroundColor: '#ddd',
       borderColor: '#C0392B',
       overflow: 'hidden',
       marginRight: 8,
     },
-    otherUserImage: {
-      width: '100%',
-      height: '100%',
-    },
+otherUserImage: {
+       width: '100%',
+       height: '100%',
+     },
+     topUserElmasRow: { flexDirection: 'row', alignItems: 'center', gap: 2 },
+     otherUserElmasRow: { flexDirection: 'row', alignItems: 'center', gap: 2 },
 });
