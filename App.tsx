@@ -309,14 +309,14 @@ const chapters = [
   { id: 1, title: 'Bölüm 1', screens: [baseScreens[0], baseScreens[1], baseScreens[2]] },
   { id: 2, title: 'Bölüm 2', screens: [baseScreens[3], baseScreens[4], baseScreens[5]] },
   { id: 3, title: 'Bölüm 3', screens: [baseScreens[6], baseScreens[7], baseScreens[8]] },
-  { id: 4, title: 'Bölüm 4', screens: [baseScreens[9], baseScreens[10], baseScreens[11]] },,
+  { id: 4, title: 'Bölüm 4', screens: [baseScreens[9], baseScreens[10], baseScreens[11]] },
 ];
 
 // ====================================================
 // ANA BİLEŞEN 
 // ====================================================
 function MobilProjem() {
-  const [activeTab, setActiveTab] = useState<'Giris' | 'Kayit' | 'main' | 'profile' | 'shop' | 'about'>('Giris');
+  const [activeTab, setActiveTab] = useState<'Giris' | 'Kayit' | 'main' | 'profile' | 'shop' | 'about' | 'leaderboard'>('Giris');
   const [elmas, setElmas] = useState(100);
   const [ownedItems, setOwnedItems] = useState<number[]>([1, 2, 3]);
   const [openSelectorTrigger, setOpenSelectorTrigger] = useState(0);
@@ -393,11 +393,14 @@ function MobilProjem() {
       {activeTab === 'shop' && (
         <ShopScreen onBack={goBack} elmas={elmas} ownedItems={ownedItems} onBuy={handleBuy} />
       )}
-      {activeTab === 'about' && (
-        <AboutScreen drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
-      )}
+{activeTab === 'about' && (
+         <AboutScreen drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+       )}
+       {activeTab === 'leaderboard' && (
+         <LeaderboardScreen onBack={goBack} elmas={elmas} drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen} />
+       )}
 
-      {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop' || activeTab === 'about') && (
+       {(activeTab === 'main' || activeTab === 'profile' || activeTab === 'shop' || activeTab === 'about' || activeTab === 'leaderboard') && (
         <>
           <View style={[styles.drawer, { transform: [{ translateX: drawerOpen ? 0 : -187 }] }]}>
             <TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('profile'); setDrawerOpen(false); }}>
@@ -408,10 +411,10 @@ function MobilProjem() {
               <Image source={require('./assets/takas-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
               <Text style={styles.drawerItemText}>Takas</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.drawerItem} onPress={() => { setDrawerOpen(false); Alert.alert('Bilgi', 'Lider Tablosu'); }}>
-              <Image source={require('./assets/lt-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
-              <Text style={styles.drawerItemText}>Lider Tablosu</Text>
-            </TouchableOpacity>
+<TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('leaderboard'); setDrawerOpen(false); }}>
+               <Image source={require('./assets/lt-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
+               <Text style={styles.drawerItemText}>Lider Tablosu</Text>
+             </TouchableOpacity>
             <TouchableOpacity style={styles.drawerItem} onPress={() => { navigateTo('about'); setDrawerOpen(false); }}>
               <Image source={require('./assets/info-icon.png')} style={styles.drawerItemIcon} resizeMode="contain" />
               <Text style={styles.drawerItemText}>Hakkımızda</Text>
@@ -567,6 +570,9 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
 
   return (
     <View style={[styles.screenContainer, styles.screenContainerPadding, { paddingTop: 60 }]}>
+      {showSelector && (
+        <Image source={require('./assets/wallpaper.png')} style={styles.backgroundWatermark} resizeMode="contain" />
+      )}
       {showSelector && (
         <TouchableOpacity style={styles.topLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
           <Text style={styles.navIcon}>☰</Text>
@@ -941,12 +947,100 @@ function AboutScreen({ drawerOpen, setDrawerOpen }: { drawerOpen: boolean; setDr
 }
 
 // =====================
+// LİDER TABLOSU EKRANI
+// =====================
+function LeaderboardScreen({ onBack, elmas, drawerOpen, setDrawerOpen }: { onBack: () => void; elmas: number; drawerOpen: boolean; setDrawerOpen: (v: boolean) => void }) {
+  const topUsers = [
+    { id: 1, username: 'PLAYER1', elmas: 5000, image: require('./assets/image8.png') },
+    { id: 2, username: 'PLAYER2', elmas: 4500, image: require('./assets/image11.png') },
+    { id: 3, username: 'PLAYER3', elmas: 4000, image: require('./assets/image10.png') },
+  ];
+
+  const otherUsers = [
+    { id: 4, username: 'PLAYER4', elmas: 3500, image: require('./assets/image8.png') },
+    { id: 5, username: 'PLAYER5', elmas: 3000, image: require('./assets/image11.png') },
+    { id: 6, username: 'PLAYER6', elmas: 2500, image: require('./assets/image10.png') },
+  ];
+
+  return (
+    <View style={[styles.screenContainer, styles.screenContainerPadding, { paddingTop: 60 }]}>
+      <Image source={require('./assets/wallpaper.png')} style={styles.backgroundWatermark} resizeMode="contain" />
+      <TouchableOpacity style={styles.topLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
+        <Text style={styles.navIcon}>☰</Text>
+      </TouchableOpacity>
+      <View style={[styles.topBar, styles.topBarFullWidth, styles.topBarSelector]}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require('./assets/image6.jpeg')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={styles.elmasBadge}>
+          <Text style={styles.elmasText}>💎 {elmas}</Text>
+        </View>
+      </View>
+
+      <Text style={styles.leaderboardHeader}>LİDER TABLOSU</Text>
+
+      <View style={styles.topThreeContainer}>
+        <View style={[styles.topUserItem, styles.firstPlaceItem]}>
+          <View style={[styles.topUserCircle, styles.firstPlaceCircle]}>
+            <Image source={topUsers[0].image} style={styles.topUserImage} resizeMode="cover" />
+          </View>
+          <Text style={styles.topUsername}>{topUsers[0].username}</Text>
+          <Text style={styles.topUserElmas}>💎 {topUsers[0].elmas}</Text>
+        </View>
+        <View style={[styles.topUserItem, styles.secondPlaceItem]}>
+          <View style={styles.topUserCircle}>
+            <Image source={topUsers[1].image} style={styles.topUserImage} resizeMode="cover" />
+          </View>
+          <Text style={styles.topUsername}>{topUsers[1].username}</Text>
+          <Text style={styles.topUserElmas}>💎 {topUsers[1].elmas}</Text>
+        </View>
+        <View style={[styles.topUserItem, styles.thirdPlaceItem]}>
+          <View style={styles.topUserCircle}>
+            <Image source={topUsers[2].image} style={styles.topUserImage} resizeMode="cover" />
+          </View>
+          <Text style={styles.topUsername}>{topUsers[2].username}</Text>
+          <Text style={styles.topUserElmas}>💎 {topUsers[2].elmas}</Text>
+        </View>
+      </View>
+
+      <View style={styles.otherUsersContainer}>
+        {otherUsers.map((user) => (
+          <View key={user.id} style={styles.otherUserRow}>
+            <Text style={styles.rankText}>#{user.id}</Text>
+            <View style={styles.otherUserCircle}>
+              <Image source={user.image} style={styles.otherUserImage} resizeMode="cover" />
+            </View>
+            <View style={styles.otherUserInfo}>
+              <Text style={styles.otherUsername}>{user.username}</Text>
+              <Text style={styles.otherUserElmas}>💎 {user.elmas}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+// =====================
 // STİLLER (STYLES)
 // =====================
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
-  screenContainer: { flex: 1 }, 
-  screenContainerPadding: { paddingHorizontal: 20 },
+screenContainer: { flex: 1 }, 
+   screenContainerPadding: { paddingHorizontal: 20 },
+   backgroundWatermark: {
+     position: 'absolute',
+     top: 60,
+     opacity: 0.5,
+     left: 0,
+     right: 0,
+     bottom: 0,
+     zIndex: -1,
+   },
 
    bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, borderTopWidth: 0.5, borderTopColor: '#eee', backgroundColor: '#fff', zIndex: 10 },
    navItem: { alignItems: 'center' },
@@ -1185,5 +1279,110 @@ const styles = StyleSheet.create({
   kartVisa: { textAlign: 'center', fontSize: 16, fontWeight: 'bold', marginBottom: 15, color: '#333' },
   kartInput: { backgroundColor: '#E0E0E0', borderRadius: 4, height: 40, paddingHorizontal: 10, marginBottom: 15, color: '#333' },
   inputLabel: { fontSize: 12, color: '#333', marginBottom: 5 },
-  kartRow: { flexDirection: 'row', justifyContent: 'space-between' },
+kartRow: { flexDirection: 'row', justifyContent: 'space-between' },
+   drawerOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 4 },
+
+leaderboardHeader: {
+      fontSize: 22,
+      fontWeight: 'bold',
+      color: '#C0392B',
+      textAlign: 'center',
+      marginVertical: 20,
+    },
+    topThreeContainer: {
+      height: 150,
+      marginBottom: 30,
+      position: 'relative',
+    },
+    topUserItem: {
+      alignItems: 'center',
+      position: 'absolute',
+    },
+    topUserCircle: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      backgroundColor: '#ddd',
+      borderWidth: 0,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    firstPlaceCircle: {
+      width: 95,
+      height: 95,
+      borderRadius: 47.5,
+    },
+    firstPlaceItem: {
+      top: 0,
+      left: '50%',
+      marginLeft: -47.5,
+    },
+    secondPlaceItem: {
+      top: 40,
+      left: '15%',
+      marginLeft: -40,
+    },
+thirdPlaceItem: {
+      top: 60,
+      left: '85%',
+      marginLeft: -40,
+    },
+    topUserImage: {
+      width: '100%',
+      height: '100%',
+    },
+    topUsername: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: '#1a1a1a',
+      marginTop: 8,
+    },
+    topUserElmas: {
+      fontSize: 12,
+      color: '#C0392B',
+      marginTop: 4,
+    },
+    otherUsersContainer: {
+     width: '100%',
+     marginTop: 10,
+   },
+   otherUserRow: {
+     flexDirection: 'row',
+     alignItems: 'center',
+     paddingVertical: 12,
+   },
+   rankText: {
+     fontSize: 16,
+     fontWeight: 'bold',
+     color: '#C0392B',
+     width: 40,
+   },
+   otherUserInfo: {
+     flex: 1,
+     flexDirection: 'row',
+     justifyContent: 'space-between',
+   },
+otherUsername: {
+      fontSize: 15,
+      fontWeight: '500',
+      color: '#1a1a1a',
+    },
+    otherUserElmas: {
+      fontSize: 14,
+      color: '#C0392B',
+    },
+    otherUserCircle: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: '#ddd',
+      borderColor: '#C0392B',
+      overflow: 'hidden',
+      marginRight: 8,
+    },
+    otherUserImage: {
+      width: '100%',
+      height: '100%',
+    },
 });
