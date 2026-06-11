@@ -260,6 +260,7 @@ const baseScreens = [
     darkPatternDesc: 'Büyük ödül gibi sunulan teklifin aslında ücretli bir abonelik olduğunu küçük yazılardan fark ettin ve tuzağa düşmedin! Harika bir Avcı hamlesi!',
     image: require('./Gorseller/sandik.png'), 
     isCustomLayout: false, 
+    kucukUyariYazisi: '7 günlük ücretsiz VIP deneme süresi sonrası 89,99₺/ay'
   },
   {
     id: 11,
@@ -672,7 +673,8 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
                 <Text style={styles.onayKutusuMetni}>Ayda 9.90 dolar</Text>
               </TouchableOpacity>
             )}
-            {current?.customType === 'abonelikSecimi' && (
+            
+          {current?.customType === 'abonelikSecimi' && (
               <View style={styles.abonelikKutusu}>
                 <Text style={styles.abonelikBaslik}>HER GİRİŞİNDE YÜZLERCE ELMAS HESABINDA!</Text>
                 <TouchableOpacity style={styles.abonelikSecenek} onPress={() => setAylikSecili(!aylikSecili)}>
@@ -692,22 +694,45 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
                 <View style={styles.kartIcerik}>
                   <Text style={styles.kartVisa}>💳 VISA</Text>
                   <Text style={styles.inputLabel}>Kredi Kartı Numarası</Text>
-                  <TextInput style={styles.kartInput} placeholder="0000 0000 0000 0000" keyboardType="numeric" value={kartNo} onChangeText={setKartNo} />
+                  <TextInput 
+                    style={styles.kartInput} 
+                    placeholder="0000 0000 0000 0000" 
+                    keyboardType="numeric" 
+                    value={kartNo} 
+                    onChangeText={(text) => setKartNo(text.replace(/[^0-9]/g, ''))} 
+                  />
                   <View style={styles.kartRow}>
                     <View style={{flex: 1, marginRight: 10}}>
                       <Text style={styles.inputLabel}>Son Kullanma Tarihi (AA/YY)</Text>
-                      <TextInput style={styles.kartInput} placeholder="AA/YY" value={sonKullanma} onChangeText={setSonKullanma} />
+                      <TextInput 
+                        style={styles.kartInput} 
+                        placeholder="AA/YY" 
+                        value={sonKullanma} 
+                        onChangeText={setSonKullanma} 
+                      />
                     </View>
                     <View style={{flex: 1}}>
                       <Text style={styles.inputLabel}>CVV</Text>
-                      <TextInput style={styles.kartInput} placeholder="CVV" keyboardType="numeric" value={cvv} onChangeText={setCvv} />
+                      <TextInput 
+                        style={styles.kartInput} 
+                        placeholder="CVV" 
+                        keyboardType="numeric" 
+                        value={cvv} 
+                        onChangeText={(text) => setCvv(text.replace(/[^0-9]/g, ''))} 
+                      />
                     </View>
                   </View>
                   <Text style={styles.inputLabel}>Kart Üzerindeki İsim</Text>
-                  <TextInput style={styles.kartInput} placeholder="İsim Soyisim" value={isim} onChangeText={setIsim} />
+                  <TextInput 
+                    style={styles.kartInput} 
+                    placeholder="İsim Soyisim" 
+                    value={isim} 
+                    onChangeText={(text) => setIsim(text.replace(/[^a-zA-ZçğışöüÇĞIİÖŞÜ\s]/g, ''))} 
+                  />
                 </View>
               </View>
             )}
+            
 
             <TouchableOpacity style={styles.btnPrimary} onPress={handlePrimary}>
               <Text style={styles.btnPrimaryText}>{current!.primaryBtn}</Text>
@@ -719,6 +744,9 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
             >
               <Text style={styles.btnSecondaryText}>{current!.secondaryBtn}</Text>
             </TouchableOpacity>
+            {current?.kucukUyariYazisi && (
+              <Text style={styles.gizliAbonelikYazisi}>{current.kucukUyariYazisi}</Text>
+            )}
 
             {infoVisible && (
               <View style={styles.infoBoxCustom}>
@@ -1073,6 +1101,7 @@ function LeaderboardScreen({ onBack, elmas, drawerOpen, setDrawerOpen }: { onBac
 // =====================
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
+  gizliAbonelikYazisi: { fontSize: 9, color: '#A0A0A0', textAlign: 'center', marginTop: 4, marginBottom: 15, opacity: 0.7 },
 screenContainer: { flex: 1 }, 
    screenContainerPadding: { paddingHorizontal: 20 },
    backgroundWatermark: {
