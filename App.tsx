@@ -575,7 +575,7 @@ function MainScreen({ onEarnElmas, elmas, openSelectorTrigger, drawerOpen, setDr
       )}
       {showSelector && (
         <TouchableOpacity style={styles.topLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
-          <Text style={styles.navIcon}>☰</Text>
+          <Image source={require('./assets/menu-icon.png')} style={styles.navIconImage} resizeMode="contain" />
         </TouchableOpacity>
       )}
       <View style={[styles.topBar, styles.topBarFullWidth, showSelector && styles.topBarSelector]}>
@@ -918,7 +918,7 @@ function AboutScreen({ drawerOpen, setDrawerOpen }: { drawerOpen: boolean; setDr
     <View style={[styles.screenContainer, styles.screenContainerPadding]}>
       <View style={[styles.aboutTopBar, styles.topBarFullWidth]}>
         <TouchableOpacity style={styles.aboutTopLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
-          <Text style={styles.navIcon}>☰</Text>
+          <Image source={require('./assets/menu-icon.png')} style={styles.navIconImage} resizeMode="contain" />
         </TouchableOpacity>
 
         <View style={styles.aboutTopCenter}>
@@ -996,7 +996,7 @@ function LeaderboardScreen({ onBack, elmas, drawerOpen, setDrawerOpen }: { onBac
     <View style={[styles.screenContainer, styles.screenContainerPadding, { paddingTop: 60 }]}>
       <Image source={require('./assets/wallpaper.png')} style={styles.backgroundWatermark} resizeMode="contain" />
       <TouchableOpacity style={styles.topLeftMenu} onPress={() => setDrawerOpen(!drawerOpen)}>
-        <Text style={styles.navIcon}>☰</Text>
+        <Image source={require('./assets/menu-icon.png')} style={styles.navIconImage} resizeMode="contain" />
 </TouchableOpacity>
       <View style={[styles.topBar, styles.topBarFullWidth, styles.topBarSelector]}>
         <View style={styles.logoContainer}>
