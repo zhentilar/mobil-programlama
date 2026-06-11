@@ -748,9 +748,30 @@ function ProfileScreen({ onShop, ownedItems, elmas }: { onShop: () => void; owne
   return (
     <ScrollView style={[styles.screenContainer, styles.screenContainerPadding]} showsVerticalScrollIndicator={false}>
       <View style={styles.profileHeader}>
-        <View style={styles.avatarPlaceholder}>
-          <Text style={styles.avatarInitial}>K</Text>
-        </View>
+<View style={styles.avatarPlaceholder}>
+  <Text style={styles.avatarInitial}>K</Text>
+  {ownedItems.includes(5) && (
+    <Image
+      source={require('./assets/image10.png')}
+      style={styles.avatarFrameEffect}
+      resizeMode="contain"
+    />
+  )}
+  {ownedItems.includes(3) && (
+    <Image
+      source={require('./assets/image12.png')}
+      style={styles.avatarHatEffect}
+      resizeMode="contain"
+    />
+  )}
+  {ownedItems.includes(6) && (
+    <Image
+      source={require('./assets/image9.png')}
+      style={styles.avatarSparkleEffect}
+      resizeMode="contain"
+    />
+  )}
+</View>
         <Text style={styles.username}>Kullanıcı Adı</Text>
         <View style={styles.elmasBadge}>
           <Text style={styles.elmasText}>💎 {elmas} elmas</Text>
@@ -1212,6 +1233,27 @@ screenContainer: { flex: 1 },
     fontWeight: '700',
     color: '#C0392B',
   },
+
+  avatarFrameEffect: {
+  position: 'absolute',
+  width: 110,
+  height: 110,
+  borderRadius: 55,
+  opacity: 0.75,
+},
+avatarHatEffect: {
+  position: 'absolute',
+  top: -22,
+  width: 60,
+  height: 40,
+},
+avatarSparkleEffect: {
+  position: 'absolute',
+  bottom: -4,
+  right: -4,
+  width: 28,
+  height: 28,
+},
 
   icKapsayici: { flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'flex-start' },
   logoBolumu: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 60, marginBottom: 30, width: '100%' },
